@@ -1,0 +1,3 @@
+/mnt/c/Users/Peter/Repos/Waves/cpp/cmake-build-debug/CMakeFiles/Waves.dir
+/mnt/c/Users/Peter/Repos/Waves/cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Peter/Repos/Waves/cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
