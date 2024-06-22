@@ -50,4 +50,5 @@ add_executable(Waves main.cpp
 
         src/Vehicle/VehicleMain.cpp
         src/Vehicle/VehicleMain.h
+        src/Model/Base/Angle.h
 )

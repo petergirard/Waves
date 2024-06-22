@@ -23,7 +23,7 @@ void VehicleMain::update(const ManeuverState &newState, const TimePoint &current
         return;
     }
 
-    maneuverController.updateControls(getNavigationStatus(), currentTime);
+    maneuverController.updateControls(newState, getNavigationStatus(), currentTime);
 }
 
 void VehicleMain::runMission(const Mission &mission) {

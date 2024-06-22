@@ -20,7 +20,8 @@ class ManeuverController {
 public:
     bool isStopped = true;
     ManeuverControls controls = ManeuverControls();
-    void updateControls(const NavigationStatus& missionStatus,
+    void updateControls(const ManeuverState& maneuverState,
+                        const NavigationStatus& missionStatus,
                         const TimePoint& currentTime);
     void stop();
     ManeuverController() = default;
@@ -30,6 +31,7 @@ private:
     ManeuverState lastState = ManeuverState();
     TimePoint lastUpdateTime{};
 
+    PidOutput depthPidOutputs = PidOutput();
     PidOutput pitchPidOutputs = PidOutput();
     PidOutput yawPidOutputs = PidOutput();
     PidOutput speedPidOutputs = PidOutput();

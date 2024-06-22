@@ -7,8 +7,8 @@
 #include "src/Sim/Display.h"
 
 Mission constructMission(){
-    Waypoint wp1 = {Point2D(50, 0), 10, 1.5, 10};
     Waypoint wp2 = {Point2D(50, 50), 10, 1.5, 10};
+    Waypoint wp1 = {Point2D(50, 0), 10, 1.5, 10};
     Waypoint wp3 = {Point2D(0, 50), 10, 1.5, 10};
     Waypoint wp4 = {Point2D(0, 0), 10, 1.5, 10};
     return Mission("Test1", {wp1, wp2, wp3, wp4});

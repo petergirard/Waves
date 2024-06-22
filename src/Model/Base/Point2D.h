@@ -6,7 +6,6 @@
 #define WAVES_POINT2D_H
 
 #include <complex>
-#include "../../Util/UnitConversion.h"
 #include "Vector2D.h"
 
 struct Point2D {
@@ -42,8 +41,7 @@ public:
 
         double dotProduct = v1.x * v2.x + v1.y * v2.y;
         double crossProduct = v1.x * v2.y - v1.y * v2.x;
-        double angleRadians = std::atan2(crossProduct, dotProduct);
-        return UnitConversion::toDegrees(angleRadians);
+        return std::atan2(crossProduct, dotProduct);
     }
 };
 

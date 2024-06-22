@@ -14,7 +14,6 @@ ManeuverState Physics::update(const ManeuverState &lastState,
     double speed = lastState.velocityWorldFrame.magnitude;
     double drag = 0.5 * WATER_DENSITY * speed * speed * DRAG_COEFF;
     double thrust = controls.throttle * THRUST_MAX;
-    double weight = MASS * GRAVITY;
 
     // Compute force components
     double dragX = drag * std::cos(lastState.attitude.pitch) * std::cos(lastState.attitude.yaw);
@@ -27,7 +26,7 @@ ManeuverState Physics::update(const ManeuverState &lastState,
     // Compute net forces
     double forceX = thrustX - dragX;
     double forceY = thrustY - dragY;
-    double forceZ = thrustZ - dragZ + BUOYANCY_FORCE - weight;
+    double forceZ = thrustZ - dragZ; // + NET_BUOYANCY;
     Vector3D force = {forceX, forceY, forceZ};
 
     // Update linear motion
@@ -44,8 +43,10 @@ ManeuverState Physics::update(const ManeuverState &lastState,
 
 
     // Update angular motion
-    double pitch_moment = controls.elevator * thrust; // Simplified
-    double yaw_moment = controls.rudder * thrust; // Simplified
+    double pitch_moment = controls.elevator * ELEVATOR_EFFECTIVENESS * thrust
+                          - PITCH_DAMPING_COEFF * lastState.attitudeVelocity.pitch;
+    double yaw_moment = controls.rudder * RUDDER_EFFECTIVENESS * thrust
+                        - YAW_DAMPING_COEFF * lastState.attitudeVelocity.yaw;
     double pitch_acceleration = pitch_moment / MOMENT_OF_INERTIA;
     double yaw_acceleration = yaw_moment / MOMENT_OF_INERTIA;
     double pitch_rate = lastState.attitudeVelocity.pitch + pitch_acceleration * dt;

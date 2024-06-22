@@ -85,6 +85,9 @@
 		<Unit filename="/mnt/c/Users/Peter/Repos/Waves/main.cpp">
 			<Option target="Waves"/>
 		</Unit>
+		<Unit filename="/mnt/c/Users/Peter/Repos/Waves/src/Model/Base/Angle.h">
+			<Option target="Waves"/>
+		</Unit>
 		<Unit filename="/mnt/c/Users/Peter/Repos/Waves/src/Model/Base/Orientation.h">
 			<Option target="Waves"/>
 		</Unit>
