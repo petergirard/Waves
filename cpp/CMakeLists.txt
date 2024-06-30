@@ -3,6 +3,17 @@ project(Waves)
 
 set(CMAKE_CXX_STANDARD 23)
 
+# Find and include RabbitMQ C client library
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(RABBITMQ REQUIRED librabbitmq)
+
+# Find nlohmann_json library
+find_package(nlohmann_json 3.10.5 REQUIRED)
+
+# Include SimpleAmqpClient
+include_directories(/home/peter/dev/SimpleAmqpClient)
+link_directories(/home/peter/dev/SimpleAmqpClient/build)
+
 add_executable(Waves main.cpp
 
         # Model
@@ -50,5 +61,19 @@ add_executable(Waves main.cpp
 
         src/Vehicle/VehicleMain.cpp
         src/Vehicle/VehicleMain.h
-        src/Model/Base/Angle.h
+        src/Comms/JsonSerialization.cpp
+        src/Comms/JsonSerialization.h
+        src/Comms/RabbitMQ/RabbitClient.cpp
+        src/Comms/RabbitMQ/RabbitClient.h
+        src/Comms/RabbitMQ/RabbitPublisher.cpp
+        src/Comms/RabbitMQ/RabbitPublisher.h
+        src/Comms/RabbitMQ/RabbitSubscriber.cpp
+        src/Comms/RabbitMQ/RabbitSubscriber.h
+        src/Comms/WavesStatusMessage.h
 )
+
+# Link libraries
+target_link_libraries(Waves
+        ${RABBITMQ_LIBRARIES}
+        SimpleAmqpClient
+        nlohmann_json::nlohmann_json)

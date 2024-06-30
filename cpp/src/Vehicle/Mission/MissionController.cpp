@@ -19,11 +19,20 @@ void MissionController::update(const ManeuverState& state) {
     }
 
     double yawGoal = state.position.to2D().angleTo(state.position.to2D());
-    double yawError = yawGoal - state.attitude.yaw;
-    double depthError = missionStatus.activeWaypoint.depth - state.position.z;
-    double speedError = missionStatus.activeWaypoint.speed - state.velocityWorldFrame.to2D().magnitude;
+    double depthGoal = missionStatus.activeWaypoint.depth;
+    double speedGoal = missionStatus.activeWaypoint.speed;
 
-    navigationStatus = {distanceToWaypoint, yawError, depthError, speedError};
+    double yawError = yawGoal - state.attitude.yaw;
+    double depthError = depthGoal - state.position.z;
+    double speedError = speedGoal - state.velocityWorldFrame.to2D().magnitude;
+
+    navigationStatus = {distanceToWaypoint,
+                        yawGoal,
+                        yawError,
+                        depthGoal,
+                        depthError,
+                        speedGoal,
+                        speedError};
 }
 
 void MissionController::runMission(const Mission& mission) {
@@ -31,6 +40,6 @@ void MissionController::runMission(const Mission& mission) {
 }
 
 void MissionController::stop() {
-    missionStatus = MissionStatus(MissionState::None, Mission(), Waypoint(), 0);
+    missionStatus = MissionStatus(MissionState::Unknown, Mission(), Waypoint(), 0);
     navigationStatus = NavigationStatus();
 }

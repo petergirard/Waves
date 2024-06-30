@@ -5,6 +5,11 @@
 #include "src/Vehicle/VehicleMain.h"
 #include "src/Sim/Physics.h"
 #include "src/Sim/Display.h"
+#include "src/Comms/RabbitMQ/RabbitPublisher.h"
+#include "src/Comms/JsonSerialization.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 Mission constructMission(){
     Waypoint wp2 = {Point2D(50, 50), 10, 1.5, 10};
@@ -13,7 +18,6 @@ Mission constructMission(){
     Waypoint wp4 = {Point2D(0, 0), 10, 1.5, 10};
     return Mission("Test1", {wp1, wp2, wp3, wp4});
 }
-
 
 int main() {
 
@@ -31,10 +35,26 @@ int main() {
     int i = 0;
     bool running = true;
 
+    RabbitPublisher rabbitPublisher("localhost", "waves_status_message", "fanout");
+    rabbitPublisher.connect();
+
     while(running){
+
+        // Actual code.
         vehicle.update(maneuverState, currentTime);
         maneuverState = physics.update(maneuverState, vehicle.getManeuverControls(), dt);
         display.displayStats(maneuverState, vehicle.getManeuverControls());
+
+        WavesStatusMessage wavesStatusMessage(vehicle.getManeuverControls(),
+                                              maneuverState,
+                                              vehicle.getMissionStatus(),
+                                              vehicle.getNavigationStatus(),
+                                              currentTime,
+                                              runTimeSeconds);
+
+        json j = wavesStatusMessage;
+        rabbitPublisher.publishMessage(j.dump(4));
+
 
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

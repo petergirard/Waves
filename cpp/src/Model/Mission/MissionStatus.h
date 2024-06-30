@@ -8,14 +8,14 @@
 #include "Mission.h"
 
 enum MissionState{
-    None,
+    Unknown,
     Running,
     Finished
 };
 
 class MissionStatus{
 public:
-    MissionState state = MissionState::None;
+    MissionState state = MissionState::Unknown;
     Mission activeMission = Mission();
     Waypoint activeWaypoint = Waypoint();
     int activeWaypointIndex = 0;

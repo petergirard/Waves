@@ -6,7 +6,6 @@
 #define WAVES_MANEUVERSTATE_H
 
 #include "../Base/Point3D.h"
-#include "../Base/TimePoint.h"
 #include "../Base/Orientation.h"
 
 

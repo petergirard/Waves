@@ -5,6 +5,8 @@
 #ifndef WAVES_ORIENTATION_H
 #define WAVES_ORIENTATION_H
 
+#include <nlohmann/json.hpp>
+
 struct Orientation{
 public:
     double roll = 0;
@@ -18,5 +20,7 @@ public:
         return roll == other.roll && pitch == other.pitch && yaw == other.yaw;
     }
 };
+
+
 
 #endif //WAVES_ORIENTATION_H
