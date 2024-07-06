@@ -2,6 +2,7 @@ import pyqtgraph as pg
 from PyQt6.QtWidgets import QGridLayout, QWidget, QVBoxLayout, QLabel
 
 from comms.data_cache import DataCache
+from model.misc.battery_state import BatteryState
 
 
 class RealTimeDisplay(QWidget):
@@ -125,12 +126,14 @@ class RealTimeDisplay(QWidget):
 
     def _update_text(self):
         dc = self.data_cache
+
         messages = dc.messages
         distance_to_waypoint = dc.distance_to_waypoint[-1] if messages else 0
         speed = dc.speed[-1] if messages else 0
         pitch = dc.pitch[-1] if messages else 0
         yaw = dc.yaw[-1] if messages else 0
         depth = dc.depth[-1] if messages else 0
+        battery_state = dc.messages[-1].batteryState if messages else BatteryState()
 
         # Update text below each plot
         dc = self.data_cache
@@ -142,6 +145,7 @@ class RealTimeDisplay(QWidget):
             f"Current depth: {depth:.2f} m\n"
             f"Current waypoint index: {dc.current_waypoint_index}\n"
             f"Current position: {dc.current_point}\n"
-            f"Current position goal: {dc.current_point_goal}"
+            f"Current position goal: {dc.current_point_goal}\n"
+            f"Current battery state: {battery_state}"
         )
         self.info_label.setText(info_text)
