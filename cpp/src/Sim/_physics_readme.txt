@@ -1,0 +1,1 @@
+The "Physics" and "SimplePhysics" are the two physics engines of the simulator and are meant to be used interchangeably.

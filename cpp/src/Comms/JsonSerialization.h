@@ -11,11 +11,11 @@
 #include "../Model/Base/TimePoint.h"
 #include "../Model/Base/Vector2D.h"
 #include "../Model/Base/Vector3D.h"
-#include "../Model/Maneuver/ManeuverControls.h"
-#include "../Model/Maneuver/ManeuverState.h"
+#include "../Model/Maneuver/ManeuverControlsState.h"
+#include "../Model/Maneuver/PhysicalState.h"
 #include "../Model/Mission/Mission.h"
-#include "../Model/Mission/MissionStatus.h"
-#include "../Model/Mission/NavigationStatus.h"
+#include "../Model/Mission/MissionState.h"
+#include "../Model/Maneuver/ManeuverGoalsState.h"
 #include "../Model/Mission/Waypoint.h"
 #include "WavesStatusMessage.h"
 #include <nlohmann/json.hpp>
@@ -42,25 +42,25 @@ void from_json(const json& j, Vector2D& v);
 void to_json(json& j, const Vector3D& v);
 void from_json(const json& j, Vector3D& v);
 
-// ManeuverControls
-void to_json(json& j, const ManeuverControls& m);
-void from_json(const json& j, ManeuverControls& m);
+// ManeuverControlsState
+void to_json(json& j, const ManeuverControlsState& m);
+void from_json(const json& j, ManeuverControlsState& m);
 
-// ManeuverState
-void to_json(json& j, const ManeuverState& m);
-void from_json(const json& j, ManeuverState& m);
+// PhysicalState
+void to_json(json& j, const PhysicalState& m);
+void from_json(const json& j, PhysicalState& m);
 
 // Mission
 void to_json(json& j, const Mission& m);
 void from_json(const json& j, Mission& m);
 
-// MissionStatus
-void to_json(json& j, const MissionStatus& ms);
-void from_json(const json& j, MissionStatus& ms);
+// MissionState
+void to_json(json& j, const MissionState& ms);
+void from_json(const json& j, MissionState& ms);
 
-// NavigationStatus
-void to_json(json& j, const NavigationStatus& ns);
-void from_json(const json& j, NavigationStatus& ns);
+// ManeuverGoalsState
+void to_json(json& j, const ManeuverGoalsState& ns);
+void from_json(const json& j, ManeuverGoalsState& ns);
 
 // Waypoint
 void to_json(json& j, const Waypoint& w);

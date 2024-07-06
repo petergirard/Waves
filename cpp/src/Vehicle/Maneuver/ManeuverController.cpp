@@ -4,20 +4,24 @@
 
 #include "ManeuverController.h"
 #include "Pid/PidCalculator.h"
+#include "../../Util/MathUtils.h"
 
-void ManeuverController::updateControls(const ManeuverState& maneuverState,
-                                        const NavigationStatus& navigationStatus,
+void ManeuverController::updateControls(const PhysicalState& physicalState,
+                                        const MissionState& missionState,
                                         const TimePoint& currentTime) {
 
-    depthPidOutputs = PidCalculator::calculate(navigationStatus.depthError, currentTime, depthPidOutputs, settings.depthPid);
+    maneuverGoalState = calculateManeuverState(missionState, physicalState);
+
+    depthPidOutputs = PidCalculator::calculate(maneuverGoalState.depthError, currentTime, depthPidOutputs, settings.depthPid);
     double pitchGoal = GenericUtils::boundNumber(depthPidOutputs.value, -1 * std::numbers::pi / 4, std::numbers::pi / 4); // -45 deg to 45 deg.
-    double pitchError = pitchGoal - maneuverState.attitude.pitch;
+    pitchGoal *= -1;
+    double pitchError = pitchGoal - physicalState.attitude.pitch;
 
     pitchPidOutputs = PidCalculator::calculate(pitchError, currentTime, pitchPidOutputs, settings.pitchPid);
-    yawPidOutputs = PidCalculator::calculate(navigationStatus.yawError, currentTime, yawPidOutputs, settings.yawPid);
-    speedPidOutputs = PidCalculator::calculate(navigationStatus.speedError, currentTime, speedPidOutputs, settings.yawPid);
+    yawPidOutputs = PidCalculator::calculate(maneuverGoalState.yawError, currentTime, yawPidOutputs, settings.yawPid);
+    speedPidOutputs = PidCalculator::calculate(maneuverGoalState.speedError, currentTime, speedPidOutputs, settings.speedPid);
 
-    controls = ManeuverControls(pitchGoal, pitchPidOutputs.value, yawPidOutputs.value, speedPidOutputs.value);
+    controls = ManeuverControlsState(pitchGoal, pitchPidOutputs.value, yawPidOutputs.value, speedPidOutputs.value);
     isStopped = false;
 }
 
@@ -27,6 +31,23 @@ void ManeuverController::stop() {
     yawPidOutputs = PidOutput();
     speedPidOutputs = PidOutput();
 
-    controls = ManeuverControls();
+    controls = ManeuverControlsState();
     isStopped = true;
+}
+
+ManeuverGoalsState ManeuverController::calculateManeuverState(const MissionState& missionState, PhysicalState physicalState) {
+    double yawGoal = physicalState.position.to2D().angleTo(missionState.activeWaypoint.position);
+    double depthGoal = missionState.activeWaypoint.depth;
+    double speedGoal = missionState.activeWaypoint.speed;
+
+    double yawError = MathUtils::boundRadians_NegPiToPi(yawGoal - physicalState.attitude.yaw);
+    double depthError = depthGoal - physicalState.position.z;
+    double speedError = speedGoal - physicalState.velocityWorldFrame.to2D().magnitude;
+
+    return {yawGoal,
+            yawError,
+            depthGoal,
+            depthError,
+            speedGoal,
+            speedError};
 }

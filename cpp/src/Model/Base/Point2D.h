@@ -36,13 +36,18 @@ public:
     }
 
     [[nodiscard]] double angleTo(const Point2D& other) const {
-        Point2D v1 = *this;
-        Point2D v2 = other;
-
-        double dotProduct = v1.x * v2.x + v1.y * v2.y;
-        double crossProduct = v1.x * v2.y - v1.y * v2.x;
-        return std::atan2(crossProduct, dotProduct);
+        Vector2D v = vectorTo(other);
+        return std::atan2(v.y, v.x);
     }
+
+//    [[nodiscard]] double angleTo(const Point2D& other) const {
+//        Point2D v1 = *this;
+//        Point2D v2 = other;
+//
+//        double dotProduct = v1.x * v2.x + v1.y * v2.y;
+//        double crossProduct = v1.x * v2.y - v1.y * v2.x;
+//        return std::atan2(crossProduct, dotProduct);
+//    }
 };
 
 #endif //WAVES_POINT2D_H

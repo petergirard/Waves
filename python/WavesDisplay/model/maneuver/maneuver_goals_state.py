@@ -2,8 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class NavigationStatus:
-    distanceToWaypoint: float = 0
+class ManeuverGoalsState:
     yawGoal: float = 0
     yawError: float = 0
     depthGoal: float = 0
@@ -13,7 +12,6 @@ class NavigationStatus:
 
     def to_dict(self):
         return {
-            'distanceToWaypoint': self.distanceToWaypoint,
             'yawGoal': self.yawGoal,
             'yawError': self.yawError,
             'depthGoal': self.depthGoal,
@@ -24,4 +22,4 @@ class NavigationStatus:
 
     @staticmethod
     def from_dict(data):
-        return NavigationStatus(**data)
+        return ManeuverGoalsState(**data)

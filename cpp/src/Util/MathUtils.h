@@ -11,9 +11,16 @@
 
 class MathUtils {
 public:
-    static double boundAngle_0to360(double angle);
+    static double boundDegrees_0to360(double angle);
+    static double boundDegrees_Neg180To180(double angle);
+    static double boundRadians_0to2Pi(double angle);
+    static double boundRadians_NegPiToPi(double angle);
     static double executePolynomial(double x, const std::vector<double>& polynomial);
     static double applySigmoidFunction(double x);
+    static double sign(double x);
+
+private:
+    static double boundAngle(double angle, double min, double max);
 };
 
 

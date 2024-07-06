@@ -3,6 +3,7 @@
 #include <chrono>
 #include "src/Model/Mission/Mission.h"
 #include "src/Vehicle/VehicleMain.h"
+#include "src/Sim/SimplePhysics.h"
 #include "src/Sim/Physics.h"
 #include "src/Sim/Display.h"
 #include "src/Comms/RabbitMQ/RabbitPublisher.h"
@@ -12,8 +13,8 @@
 using json = nlohmann::json;
 
 Mission constructMission(){
-    Waypoint wp2 = {Point2D(50, 50), 10, 1.5, 10};
-    Waypoint wp1 = {Point2D(50, 0), 10, 1.5, 10};
+    Waypoint wp1 = {Point2D(50, 50), 10, 1.5, 10};
+    Waypoint wp2 = {Point2D(50, 0), 10, 1.5, 10};
     Waypoint wp3 = {Point2D(0, 50), 10, 1.5, 10};
     Waypoint wp4 = {Point2D(0, 0), 10, 1.5, 10};
     return Mission("Test1", {wp1, wp2, wp3, wp4});
@@ -22,17 +23,16 @@ Mission constructMission(){
 int main() {
 
     VehicleMain vehicle{};
-    Physics physics{}; // simulator
+    SimplePhysics physics{}; // simulator
     Display display{};
 
     vehicle.runMission(constructMission());
-    ManeuverState maneuverState{};
+    PhysicalState maneuverState{};
 
     auto initialTime = std::chrono::time_point_cast<std::chrono::duration<double>>(std::chrono::system_clock::now());
     auto currentTime = initialTime;
     double runTimeSeconds = 0;
-    double dt = 0.1;
-    int i = 0;
+    double dt = 1;
     bool running = true;
 
     RabbitPublisher rabbitPublisher("localhost", "waves_status_message", "fanout");
@@ -40,15 +40,14 @@ int main() {
 
     while(running){
 
-        // Actual code.
         vehicle.update(maneuverState, currentTime);
-        maneuverState = physics.update(maneuverState, vehicle.getManeuverControls(), dt);
-        display.displayStats(maneuverState, vehicle.getManeuverControls());
+        maneuverState = physics.update(maneuverState, vehicle.getManeuverControlsState(), dt);
+        display.displayStats(maneuverState, vehicle.getManeuverControlsState());
 
-        WavesStatusMessage wavesStatusMessage(vehicle.getManeuverControls(),
+        WavesStatusMessage wavesStatusMessage(vehicle.getManeuverControlsState(),
                                               maneuverState,
-                                              vehicle.getMissionStatus(),
-                                              vehicle.getNavigationStatus(),
+                                              vehicle.getMissionState(),
+                                              vehicle.getManeuverGoalsState(),
                                               currentTime,
                                               runTimeSeconds);
 

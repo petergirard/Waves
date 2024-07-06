@@ -59,20 +59,41 @@ void from_json(const json& j, Vector3D& v) {
     j.at("magnitude").get_to(v.magnitude);
 }
 
-// ManeuverControls
-void to_json(json& j, const ManeuverControls& m) {
+// ManeuverControlsState
+void to_json(json& j, const ManeuverControlsState& m) {
     j = json{{"pitchGoal", m.pitchGoal}, {"elevator", m.elevator}, {"rudder", m.rudder}, {"throttle", m.throttle}};
 }
 
-void from_json(const json& j, ManeuverControls& m) {
+void from_json(const json& j, ManeuverControlsState& m) {
     j.at("pitchGoal").get_to(m.pitchGoal);
     j.at("elevator").get_to(m.elevator);
     j.at("rudder").get_to(m.rudder);
     j.at("throttle").get_to(m.throttle);
 }
 
-// ManeuverState
-void to_json(json& j, const ManeuverState& m) {
+// ManeuverGoalsState
+void to_json(json& j, const ManeuverGoalsState& ns) {
+    j = json{
+            {"yawGoal", ns.yawGoal},
+            {"yawError", ns.yawError},
+            {"depthGoal", ns.depthGoal},
+            {"depthError", ns.depthError},
+            {"speedGoal", ns.speedGoal},
+            {"speedError", ns.speedError}
+    };
+}
+
+void from_json(const json& j, ManeuverGoalsState& ns) {
+    j.at("yawGoal").get_to(ns.yawGoal);
+    j.at("yawError").get_to(ns.yawError);
+    j.at("depthGoal").get_to(ns.depthGoal);
+    j.at("depthError").get_to(ns.depthError);
+    j.at("speedGoal").get_to(ns.speedGoal);
+    j.at("speedError").get_to(ns.speedError);
+}
+
+// PhysicalState
+void to_json(json& j, const PhysicalState& m) {
     j = json{
             {"position", m.position},
             {"velocityWorldFrame", m.velocityWorldFrame},
@@ -85,7 +106,7 @@ void to_json(json& j, const ManeuverState& m) {
     };
 }
 
-void from_json(const json& j, ManeuverState& m) {
+void from_json(const json& j, PhysicalState& m) {
     j.at("position").get_to(m.position);
     j.at("velocityWorldFrame").get_to(m.velocityWorldFrame);
     j.at("accelerationWorldFrame").get_to(m.accelerationWorldFrame);
@@ -106,45 +127,26 @@ void from_json(const json& j, Mission& m) {
     j.at("waypoints").get_to(m.waypoints);
 }
 
-// MissionStatus
-void to_json(json& j, const MissionStatus& ms) {
+// MissionState
+void to_json(json& j, const MissionState& ms) {
     j = json{
-            {"state", ms.state},
+            {"activeMissionState", ms.activeMissionState},
             {"activeMission", ms.activeMission},
             {"activeWaypoint", ms.activeWaypoint},
-            {"activeWaypointIndex", ms.activeWaypointIndex}
+            {"activeWaypointIndex", ms.activeWaypointIndex},
+            {"distanceToWaypoint", ms.distanceToWaypoint}
     };
 }
 
-void from_json(const json& j, MissionStatus& ms) {
-    j.at("state").get_to(ms.state);
+void from_json(const json& j, MissionState& ms) {
+    j.at("activeMissionState").get_to(ms.activeMissionState);
     j.at("activeMission").get_to(ms.activeMission);
     j.at("activeWaypoint").get_to(ms.activeWaypoint);
     j.at("activeWaypointIndex").get_to(ms.activeWaypointIndex);
+    j.at("distanceToWaypoint").get_to(ms.distanceToWaypoint);
 }
 
-// NavigationStatus
-void to_json(json& j, const NavigationStatus& ns) {
-    j = json{
-            {"distanceToWaypoint", ns.distanceToWaypoint},
-            {"yawGoal", ns.yawGoal},
-            {"yawError", ns.yawError},
-            {"depthGoal", ns.depthGoal},
-            {"depthError", ns.depthError},
-            {"speedGoal", ns.speedGoal},
-            {"speedError", ns.speedError}
-    };
-}
 
-void from_json(const json& j, NavigationStatus& ns) {
-    j.at("distanceToWaypoint").get_to(ns.distanceToWaypoint);
-    j.at("yawGoal").get_to(ns.yawGoal);
-    j.at("yawError").get_to(ns.yawError);
-    j.at("depthGoal").get_to(ns.depthGoal);
-    j.at("depthError").get_to(ns.depthError);
-    j.at("speedGoal").get_to(ns.speedGoal);
-    j.at("speedError").get_to(ns.speedError);
-}
 
 // Waypoint
 void to_json(json& j, const Waypoint& w) {
@@ -161,20 +163,20 @@ void from_json(const json& j, Waypoint& w) {
 // WavesStatusMessage
 void to_json(json& j, const WavesStatusMessage& w) {
     j = json{
-            {"maneuverControls", w.maneuverControls},
-            {"maneuverState", w.maneuverState},
-            {"missionStatus", w.missionStatus},
-            {"navigationStatus", w.navigationStatus},
+            {"maneuverControlsState", w.maneuverControlsState},
+            {"physicalState", w.physicalState},
+            {"missionState", w.missionState},
+            {"maneuverGoalsState", w.maneuverGoalsState},
             {"timePoint", w.timePoint.time_since_epoch().count()},
             {"runTimeSeconds", w.runTimeSeconds}
     };
 }
 
 void from_json(const json& j, WavesStatusMessage& w) {
-    j.at("maneuverControls").get_to(w.maneuverControls);
-    j.at("maneuverState").get_to(w.maneuverState);
-    j.at("missionStatus").get_to(w.missionStatus);
-    j.at("navigationStatus").get_to(w.navigationStatus);
+    j.at("maneuverControlsState").get_to(w.maneuverControlsState);
+    j.at("physicalState").get_to(w.physicalState);
+    j.at("missionState").get_to(w.missionState);
+    j.at("maneuverGoalsState").get_to(w.maneuverGoalsState);
     double time_since_epoch = j.at("timePoint").get<double>();
     w.timePoint = TimePoint(std::chrono::duration<double>(time_since_epoch));
     j.at("runTimeSeconds").get_to(w.runTimeSeconds);

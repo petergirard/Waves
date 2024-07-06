@@ -6,12 +6,13 @@
 #define WAVES_MANEUVERCONTROLLER_H
 
 
-#include "../../Model/Maneuver/ManeuverControls.h"
+#include "../../Model/Maneuver/ManeuverControlsState.h"
 #include "../../Model/Mission/Waypoint.h"
-#include "../../Model/Maneuver/ManeuverState.h"
-#include "../../Model/Mission/NavigationStatus.h"
+#include "../../Model/Maneuver/PhysicalState.h"
+#include "../../Model/Maneuver/ManeuverGoalsState.h"
 #include "ManeuverSettings.h"
 #include "Pid/PidOutput.h"
+#include "../../Model/Mission/MissionState.h"
 #include <chrono>
 
 using TimePoint = std::chrono::time_point<std::chrono::system_clock,std::chrono::duration<double>>;
@@ -19,16 +20,18 @@ using TimePoint = std::chrono::time_point<std::chrono::system_clock,std::chrono:
 class ManeuverController {
 public:
     bool isStopped = true;
-    ManeuverControls controls = ManeuverControls();
-    void updateControls(const ManeuverState& maneuverState,
-                        const NavigationStatus& missionStatus,
+    ManeuverControlsState controls = ManeuverControlsState();
+    ManeuverGoalsState maneuverGoalState = ManeuverGoalsState();
+    void updateControls(const PhysicalState& physicalState,
+                        const MissionState& missionState,
                         const TimePoint& currentTime);
     void stop();
     ManeuverController() = default;
 
 private:
+    static ManeuverGoalsState calculateManeuverState(const MissionState& missionState, PhysicalState physicalState);
     ManeuverSettings settings = ManeuverSettings(); // hardcoded to defaults for now.
-    ManeuverState lastState = ManeuverState();
+    PhysicalState lastState = PhysicalState();
     TimePoint lastUpdateTime{};
 
     PidOutput depthPidOutputs = PidOutput();

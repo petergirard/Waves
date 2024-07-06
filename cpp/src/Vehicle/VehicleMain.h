@@ -6,9 +6,9 @@
 #define WAVES_VEHICLEMAIN_H
 
 
-#include "../Model/Maneuver/ManeuverState.h"
-#include "../Model/Maneuver/ManeuverControls.h"
-#include "../Model/Mission/NavigationStatus.h"
+#include "../Model/Maneuver/PhysicalState.h"
+#include "../Model/Maneuver/ManeuverControlsState.h"
+#include "../Model/Maneuver/ManeuverGoalsState.h"
 #include "Maneuver/ManeuverController.h"
 #include "Mission/MissionController.h"
 
@@ -17,11 +17,11 @@ class VehicleMain {
 public:
     VehicleMain() = default;
 
-    [[nodiscard]] MissionStatus getMissionStatus() const;
-    [[nodiscard]] NavigationStatus getNavigationStatus() const;
-    [[nodiscard]] ManeuverControls getManeuverControls() const;
+    [[nodiscard]] MissionState getMissionState() const;
+    [[nodiscard]] ManeuverGoalsState getManeuverGoalsState() const;
+    [[nodiscard]] ManeuverControlsState getManeuverControlsState() const;
 
-    void update(const ManeuverState& newState, const TimePoint& currentTime);
+    void update(const PhysicalState& newState, const TimePoint& currentTime);
     void runMission(const Mission& mission);
     void stop();
 

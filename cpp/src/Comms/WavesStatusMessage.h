@@ -5,33 +5,33 @@
 #ifndef WAVES_WAVESSTATUSMESSAGE_H
 #define WAVES_WAVESSTATUSMESSAGE_H
 
-#include "../Model/Maneuver/ManeuverControls.h"
-#include "../Model/Maneuver/ManeuverState.h"
-#include "../Model/Mission/MissionStatus.h"
-#include "../Model/Mission/NavigationStatus.h"
+#include "../Model/Maneuver/ManeuverControlsState.h"
+#include "../Model/Maneuver/PhysicalState.h"
+#include "../Model/Mission/MissionState.h"
+#include "../Model/Maneuver/ManeuverGoalsState.h"
 #include "../Model/Base/TimePoint.h"
 
 class WavesStatusMessage{
 public:
-    ManeuverControls maneuverControls;
-    ManeuverState maneuverState;
-    MissionStatus missionStatus;
-    NavigationStatus navigationStatus;
+    ManeuverControlsState maneuverControlsState;
+    PhysicalState physicalState;
+    MissionState missionState;
+    ManeuverGoalsState maneuverGoalsState;
     TimePoint timePoint;
     double runTimeSeconds;
 
-    WavesStatusMessage(ManeuverControls maneuverControls_,
-                       ManeuverState maneuverState_,
-                       MissionStatus missionStatus_,
-                       NavigationStatus navigationStatus_,
+    WavesStatusMessage(ManeuverControlsState maneuverControls_,
+                       PhysicalState physicalState_,
+                       MissionState missionState_,
+                       ManeuverGoalsState maneuverGoalsState_,
                        TimePoint timePoint_,
                        double runTimeSeconds_)
-                       : maneuverControls(maneuverControls_),
-                       maneuverState(maneuverState_),
-                       missionStatus(missionStatus_),
-                       navigationStatus(navigationStatus_),
-                       timePoint(timePoint_),
-                       runTimeSeconds(runTimeSeconds_)
+                       : maneuverControlsState(maneuverControls_),
+                         physicalState(physicalState_),
+                         missionState(missionState_),
+                         maneuverGoalsState(maneuverGoalsState_),
+                         timePoint(timePoint_),
+                         runTimeSeconds(runTimeSeconds_)
                        {}
 };
 

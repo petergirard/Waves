@@ -6,7 +6,7 @@
 #include <iomanip>
 #include "Display.h"
 
-void Display::displayStats(const ManeuverState &state, const ManeuverControls &controls) {
+void Display::displayStats(const PhysicalState &state, const ManeuverControlsState &controls) {
     std::string display = renderDisplay(state, controls);
     updateScreenBuffer(display);
     printScreen();
@@ -44,7 +44,7 @@ void Display::updateScreenBuffer(const std::string& newDisplay) {
 }
 
 
-std::string Display::renderDisplay(const ManeuverState &state, const ManeuverControls &controls) {
+std::string Display::renderDisplay(const PhysicalState &state, const ManeuverControlsState &controls) {
     std::ostringstream oss;
     oss << "\n------------------------------------------\n";
     oss << "Current State:\n";
@@ -57,7 +57,7 @@ std::string Display::renderDisplay(const ManeuverState &state, const ManeuverCon
     return oss.str();
 }
 
-void Display::getStateDisplay(std::ostringstream &oss, const ManeuverState &state) {
+void Display::getStateDisplay(std::ostringstream &oss, const PhysicalState &state) {
     oss << "Position: (" << std::setw(6) << state.position.x << ", " << std::setw(6) << state.position.y << ", " << std::setw(6) << state.position.z << ") meters\n";
     oss << "Velocity (World Frame): (" << std::setw(6) << state.velocityWorldFrame.x << ", " << std::setw(6) << state.velocityWorldFrame.y << ", " << std::setw(6) << state.velocityWorldFrame.z << ") m/s\n";
     oss << "Acceleration (World Frame): (" << std::setw(6) << state.accelerationWorldFrame.x << ", " << std::setw(6) << state.accelerationWorldFrame.y << ", " << std::setw(6) << state.accelerationWorldFrame.z << ") m/s^2\n";
@@ -68,7 +68,7 @@ void Display::getStateDisplay(std::ostringstream &oss, const ManeuverState &stat
     oss << "Attitude Acceleration: (" << std::setw(6) << state.attitudeAcceleration.roll << ", " << std::setw(6) << state.attitudeAcceleration.pitch << ", " << std::setw(6) << state.attitudeAcceleration.yaw << ") degrees/s^2\n";
 }
 
-void Display::getManeuverDisplay(std::ostringstream &oss, const ManeuverControls &controls) {
+void Display::getManeuverDisplay(std::ostringstream &oss, const ManeuverControlsState &controls) {
     oss << "Elevator: " << std::setw(6) << controls.elevator << " (-1 to 1)\n";
     oss << "Rudder: " << std::setw(6) << controls.rudder << " (-1 to 1)\n";
     oss << "Throttle: " << std::setw(6) << controls.throttle << " (0 to 1)\n";
@@ -81,4 +81,6 @@ void Display::clearScreen() {
 void Display::printScreen() {
     std::flush(std::cout);
 }
+
+
 

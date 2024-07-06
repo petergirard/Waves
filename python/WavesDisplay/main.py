@@ -1,16 +1,41 @@
-# This is a sample Python script.
+import datetime
+import threading
+import sys
+from PyQt6.QtWidgets import QApplication
+from comms.data_cache import DataCache
+from comms.rabbit_subscriber import RabbitSubscriber
+from comms.waves_status_message import WavesStatusMessage
+from view.main_window import  MainWindow
 
-# Press <no shortcut> to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press <no shortcut> to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    app = QApplication(sys.argv)
+    data_cache = DataCache(datetime.timedelta(seconds=10))
+    main_window = MainWindow(data_cache)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # Load the stylesheet
+    with open('view/style.qss', 'r') as file:
+        app.setStyleSheet(file.read())
+
+    def callback(ch, method, properties, body):
+        message = WavesStatusMessage.from_json(body)
+        data_cache.add_message(message)
+
+
+    def start_consumer():
+        subscriber = RabbitSubscriber(queue='hello', exchange='waves_status_message', exchange_type='fanout',
+                                      routing_key='')
+        subscriber.connect()
+        subscriber.start_consuming(callback=callback)
+
+
+    # fake_message = WavesStatusMessage(maneuverControls=ManeuverControls(
+    #     pitchGoal=5, elevator=0, rudder=0, throttle=0
+    # ))
+    # data_cache.add_message(fake_message)
+
+    rabbitmq_thread = threading.Thread(target=start_consumer, daemon=True)
+    rabbitmq_thread.start()
+
+    main_window.run()
+    sys.exit(app.exec())

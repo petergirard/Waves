@@ -1,0 +1,33 @@
+QMainWindow {
+    background-color: #2b2b2b;
+}
+
+QTabWidget::pane {
+    border: 1px solid #444444;
+    background-color: #353535;
+}
+
+QTabBar::tab {
+    background: #3e3e3e;
+    color: #ffffff;
+    padding: 10px;
+}
+
+QTabBar::tab:selected {
+    background: #1e90ff;
+    color: #ffffff;
+}
+
+QLabel {
+    color: #ffffff;
+}
+
+QWidget {
+    background-color: #2b2b2b;
+    color: #ffffff;
+}
+
+QPlotWidget {
+    background-color: #2b2b2b;
+    border: none;
+}

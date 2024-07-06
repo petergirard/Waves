@@ -1,19 +1,19 @@
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, asdict
 import datetime
 import json
 
-from model.maneuver.maneuver_controls import ManeuverControls
-from model.maneuver.maneuver_state import ManeuverState
-from model.mission.mission_status import MissionStatus
-from model.mission.navigation_status import NavigationStatus
+from model.maneuver.maneuver_control_state import ManeuverControlState
+from model.maneuver.physical_state import PhysicalState
+from model.mission.mission_state import MissionState
+from model.maneuver.maneuver_goals_state import ManeuverGoalsState
 
 
 @dataclass
 class WavesStatusMessage:
-    maneuverControls: ManeuverControls #= field(default_factory=ManeuverControls)
-    maneuverState: ManeuverState #= field(default_factory=ManeuverState)
-    missionStatus: MissionStatus #= field(default_factory=MissionStatus)
-    navigationStatus: NavigationStatus #= field(default_factory=NavigationStatus)
+    maneuverControlsState: ManeuverControlState #= field(default_factory=ManeuverControls)
+    physicalState: PhysicalState #= field(default_factory=ManeuverState)
+    missionState: MissionState #= field(default_factory=MissionStatus)
+    maneuverGoalsState: ManeuverGoalsState #= field(default_factory=NavigationStatus)
     timePoint: datetime.datetime #= datetime.datetime.fromtimestamp(0)
     runTimeSeconds: float #= 0
 
@@ -26,11 +26,12 @@ class WavesStatusMessage:
     @staticmethod
     def from_dict(data):
         """Create an instance from a dictionary, handling nested deserialization."""
-        data['maneuverControls'] = ManeuverControls.from_dict(data['maneuverControls'])
-        data['maneuverState'] = ManeuverState.from_dict(data['maneuverState'])
-        data['missionStatus'] = MissionStatus.from_dict(data['missionStatus'])
-        data['navigationStatus'] = NavigationStatus.from_dict(data['navigationStatus'])
+        data['maneuverControlsState'] = ManeuverControlState.from_dict(data['maneuverControlsState'])
+        data['physicalState'] = PhysicalState.from_dict(data['physicalState'])
+        data['missionState'] = MissionState.from_dict(data['missionState'])
+        data['maneuverGoalsState'] = ManeuverGoalsState.from_dict(data['maneuverGoalsState'])
         data['timePoint'] = datetime.datetime.fromtimestamp(data['timePoint'])
+        data['runTimeSeconds'] = float(data['runTimeSeconds'])
         return WavesStatusMessage(**data)
 
     def to_json(self):

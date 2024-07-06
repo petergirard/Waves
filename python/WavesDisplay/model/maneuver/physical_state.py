@@ -6,7 +6,7 @@ from model.base.vector3D import Vector3D
 
 
 @dataclass
-class ManeuverState:
+class PhysicalState:
     position: Point3D = field(default_factory=Point3D)
     velocityWorldFrame: Vector3D = field(default_factory=Vector3D)
     accelerationWorldFrame: Vector3D = field(default_factory=Vector3D)
@@ -30,7 +30,7 @@ class ManeuverState:
 
     @staticmethod
     def from_dict(data):
-        return ManeuverState(
+        return PhysicalState(
             position=Point3D.from_dict(data['position']),
             velocityWorldFrame=Vector3D.from_dict(data['velocityWorldFrame']),
             accelerationWorldFrame=Vector3D.from_dict(data['accelerationWorldFrame']),

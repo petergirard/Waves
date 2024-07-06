@@ -7,12 +7,12 @@
 
 
 #include <vector>
-#include "../Model/Maneuver/ManeuverState.h"
-#include "../Model/Maneuver/ManeuverControls.h"
+#include "../Model/Maneuver/PhysicalState.h"
+#include "../Model/Maneuver/ManeuverControlsState.h"
 
 class Display {
 public:
-    void displayStats(const ManeuverState& state, const ManeuverControls& controls);
+    void displayStats(const PhysicalState& state, const ManeuverControlsState& controls);
 
 private:
     std::vector<std::string> screenBuffer;
@@ -21,9 +21,9 @@ private:
     void printScreen();
     void updateScreenBuffer(const std::string& newDisplay);
 
-    std::string renderDisplay(const ManeuverState& state, const ManeuverControls& controls);
-    void getStateDisplay(std::ostringstream &oss, const ManeuverState& state);
-    void getManeuverDisplay(std::ostringstream &oss, const ManeuverControls& controls);
+    std::string renderDisplay(const PhysicalState& state, const ManeuverControlsState& controls);
+    void getStateDisplay(std::ostringstream &oss, const PhysicalState& state);
+    void getManeuverDisplay(std::ostringstream &oss, const ManeuverControlsState& controls);
 };
 
 

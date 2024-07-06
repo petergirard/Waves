@@ -2,14 +2,14 @@
 // Created by Peter on 6/14/2024.
 //
 
-#ifndef WAVES_MANEUVERSTATE_H
-#define WAVES_MANEUVERSTATE_H
+#ifndef WAVES_PHYSICALSTATE_H
+#define WAVES_PHYSICALSTATE_H
 
 #include "../Base/Point3D.h"
 #include "../Base/Orientation.h"
 
 
-class ManeuverState{
+class PhysicalState{
 public:
     Point3D position = Point3D(); // meters.
     Vector3D velocityWorldFrame = Vector3D(); // meters / sec.
@@ -20,8 +20,8 @@ public:
     Orientation attitudeVelocity = Orientation(); // degrees / sec
     Orientation attitudeAcceleration = Orientation(); // degrees / sec^2
 
-    ManeuverState() = default;
-    ManeuverState(Point3D position_,
+    PhysicalState() = default;
+    PhysicalState(Point3D position_,
                   Vector3D velocityWorldFrame_,
                   Vector3D accelerationWorldFrame_,
                   Vector3D velocityVehicleFrame_,
@@ -39,4 +39,4 @@ public:
                     attitudeAcceleration(attitudeAcceleration_) {}
 };
 
-#endif //WAVES_MANEUVERSTATE_H
+#endif //WAVES_PHYSICALSTATE_H

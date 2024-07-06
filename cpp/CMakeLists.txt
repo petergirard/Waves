@@ -24,13 +24,13 @@ add_executable(Waves main.cpp
         src/Model/Base/Point2D.h
         src/Model/Base/TimePoint.h
 
-        src/Model/Mission/MissionStatus.h
+        src/Model/Mission/MissionState.h
         src/Model/Mission/Mission.h
         src/Model/Mission/Waypoint.h
-        src/Model/Mission/NavigationStatus.h
+        src/Model/Maneuver/ManeuverGoalsState.h
 
-        src/Model/Maneuver/ManeuverControls.h
-        src/Model/Maneuver/ManeuverState.h
+        src/Model/Maneuver/ManeuverControlsState.h
+        src/Model/Maneuver/PhysicalState.h
 
         # Sim
         src/Sim/Physics.cpp
@@ -70,6 +70,12 @@ add_executable(Waves main.cpp
         src/Comms/RabbitMQ/RabbitSubscriber.cpp
         src/Comms/RabbitMQ/RabbitSubscriber.h
         src/Comms/WavesStatusMessage.h
+        src/Sim/SimplePhysics.cpp
+        src/Sim/SimplePhysics.h
+        src/Log/DataLogger.cpp
+        src/Log/DataLogger.h
+        src/Util/FormatUtils.h
+        src/Log/LogHeaderIndex.h
 )
 
 # Link libraries

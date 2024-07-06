@@ -4,26 +4,26 @@
 
 #include "VehicleMain.h"
 
-MissionStatus VehicleMain::getMissionStatus() const {
-    return missionController.missionStatus;
+MissionState VehicleMain::getMissionState() const {
+    return missionController.missionState;
 }
 
-NavigationStatus VehicleMain::getNavigationStatus() const {
-    return missionController.navigationStatus;
+ManeuverGoalsState VehicleMain::getManeuverGoalsState() const {
+    return maneuverController.maneuverGoalState;
 }
 
-ManeuverControls VehicleMain::getManeuverControls() const {
+ManeuverControlsState VehicleMain::getManeuverControlsState() const {
     return maneuverController.controls;
 }
 
-void VehicleMain::update(const ManeuverState &newState, const TimePoint &currentTime) {
+void VehicleMain::update(const PhysicalState &newState, const TimePoint &currentTime) {
     missionController.update(newState);
-    if (getMissionStatus().state == MissionState::Finished){
+    if (getMissionState().activeMissionState == ActiveMissionState::Finished){
         maneuverController.stop();
         return;
     }
 
-    maneuverController.updateControls(newState, getNavigationStatus(), currentTime);
+    maneuverController.updateControls(newState, getMissionState(), currentTime);
 }
 
 void VehicleMain::runMission(const Mission &mission) {

@@ -6,31 +6,28 @@
 #include "Physics.h"
 #include "../Util/FrameTransformations.h"
 
-ManeuverState Physics::update(const ManeuverState &lastState,
-                               const ManeuverControls &controls,
-                               const double &dt) const {
+PhysicalState Physics::update(const PhysicalState &lastState,
+                              const ManeuverControlsState &controls,
+                              const double &dt) const {
 
     // Compute forces
-    double speed = lastState.velocityWorldFrame.magnitude;
-    double drag = 0.5 * WATER_DENSITY * speed * speed * DRAG_COEFF;
-    double thrust = controls.throttle * THRUST_MAX;
+    double dragXVehicle = calculateDrag(lastState.velocityVehicleFrame.x, DRAG_COEFF_X, VEHICLE_AREA_YZ_PLANE);
+    double dragYVehicle = calculateDrag(lastState.velocityVehicleFrame.y, DRAG_COEFF_Y, VEHICLE_AREA_XY_PLANE);
+    double dragZVehicle = calculateDrag(lastState.velocityVehicleFrame.z, DRAG_COEFF_Z, VEHICLE_AREA_XY_PLANE);
+    Vector3D dragVehicleFrame(dragXVehicle, dragYVehicle, dragZVehicle);
+    Vector3D thrustVehicleFrame(controls.throttle * THRUST_MAX, 0, 0);
+    Vector3D forceVehicleFrame = thrustVehicleFrame + dragVehicleFrame;
 
-    // Compute force components
-    double dragX = drag * std::cos(lastState.attitude.pitch) * std::cos(lastState.attitude.yaw);
-    double dragY = drag * std::cos(lastState.attitude.pitch) * std::sin(lastState.attitude.yaw);
-    double dragZ = drag * std::sin(lastState.attitude.pitch);
-    double thrustX = thrust * std::cos(lastState.attitude.pitch) * std::cos(lastState.attitude.yaw);
-    double thrustY = thrust * std::cos(lastState.attitude.pitch) * std::sin(lastState.attitude.yaw);
-    double thrustZ = thrust * std::sin(lastState.attitude.pitch);
+    // Limit force in fore-aft to only go forward
+//    if (forceVehicleFrame.x < 0)
+//        forceVehicleFrame.x = 0;
 
-    // Compute net forces
-    double forceX = thrustX - dragX;
-    double forceY = thrustY - dragY;
-    double forceZ = thrustZ - dragZ; // + NET_BUOYANCY;
-    Vector3D force = {forceX, forceY, forceZ};
+    // Transform to world frame.
+    Vector3D forceWorldFrame = FrameTransformations::vehicleToWorld(forceVehicleFrame, lastState.attitude);
+    forceWorldFrame.z += NET_BUOYANCY;
 
     // Update linear motion
-    Vector3D accelerationWorldFrame = force / MASS;
+    Vector3D accelerationWorldFrame = forceWorldFrame / (VEHICLE_MASS + VEHICLE_MASS * ADDED_MASS_PERCENTAGE);
     Vector3D velocityWorldFrame = lastState.velocityWorldFrame + (accelerationWorldFrame * dt);
     Point3D position = lastState.position + velocityWorldFrame * dt;
     if (position.z < 0){ // Bound to surface.
@@ -43,9 +40,9 @@ ManeuverState Physics::update(const ManeuverState &lastState,
 
 
     // Update angular motion
-    double pitch_moment = controls.elevator * ELEVATOR_EFFECTIVENESS * thrust
+    double pitch_moment = controls.elevator * ELEVATOR_EFFECTIVENESS * thrustVehicleFrame.x
                           - PITCH_DAMPING_COEFF * lastState.attitudeVelocity.pitch;
-    double yaw_moment = controls.rudder * RUDDER_EFFECTIVENESS * thrust
+    double yaw_moment = controls.rudder * RUDDER_EFFECTIVENESS * thrustVehicleFrame.x
                         - YAW_DAMPING_COEFF * lastState.attitudeVelocity.yaw;
     double pitch_acceleration = pitch_moment / MOMENT_OF_INERTIA;
     double yaw_acceleration = yaw_moment / MOMENT_OF_INERTIA;
@@ -66,4 +63,10 @@ ManeuverState Physics::update(const ManeuverState &lastState,
             attitude,
             attitudeVelocity,
             attitudeAcceleration};
+}
+
+double Physics::calculateDrag(double speed, double dragCoeff, double area) const {
+    double speedAbs = std::abs(speed);
+    double dragForce = 0.5 * WATER_DENSITY * speedAbs * speedAbs * dragCoeff * area;
+    return (speed > 0 ? -dragForce : dragForce);
 }

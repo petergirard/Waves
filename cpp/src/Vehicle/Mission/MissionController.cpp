@@ -4,42 +4,41 @@
 
 #include "MissionController.h"
 
-void MissionController::update(const ManeuverState& state) {
+void MissionController::update(const PhysicalState& physicalState) {
 
-    double distanceToWaypoint = state.position.to2D().distanceTo(missionStatus.activeWaypoint.position);
+    double distanceToWaypoint = physicalState.position.to2D().distanceTo(missionState.activeWaypoint.position);
 
-    if (distanceToWaypoint < missionStatus.activeWaypoint.successRadius){
-        missionStatus = missionStatus.progressWaypoint();
-        if (missionStatus.state == MissionState::Finished){
-            navigationStatus = NavigationStatus();
-        }
-        else{
-            update(state);
-        }
+    if (distanceToWaypoint > missionState.activeWaypoint.successRadius)
+        missionState.distanceToWaypoint = distanceToWaypoint;
+    else{
+        missionState = progressWaypoint(missionState, physicalState);
     }
-
-    double yawGoal = state.position.to2D().angleTo(state.position.to2D());
-    double depthGoal = missionStatus.activeWaypoint.depth;
-    double speedGoal = missionStatus.activeWaypoint.speed;
-
-    double yawError = yawGoal - state.attitude.yaw;
-    double depthError = depthGoal - state.position.z;
-    double speedError = speedGoal - state.velocityWorldFrame.to2D().magnitude;
-
-    navigationStatus = {distanceToWaypoint,
-                        yawGoal,
-                        yawError,
-                        depthGoal,
-                        depthError,
-                        speedGoal,
-                        speedError};
 }
 
 void MissionController::runMission(const Mission& mission) {
-    missionStatus = MissionStatus(MissionState::Running, mission, mission.waypoints[0], 0);
+    missionState = MissionState(ActiveMissionState::Running,
+                                mission,
+                                mission.waypoints[0],
+                                0,
+                                0);
 }
 
 void MissionController::stop() {
-    missionStatus = MissionStatus(MissionState::Unknown, Mission(), Waypoint(), 0);
-    navigationStatus = NavigationStatus();
+    missionState = MissionState();
+}
+
+MissionState MissionController::progressWaypoint(const MissionState& missionState, const PhysicalState& physicalState) {
+    int newWpIndex = missionState.activeWaypointIndex + 1;
+    if (newWpIndex == missionState.activeMission.waypoints.size()){
+        return {ActiveMissionState::Finished, missionState.activeMission, Waypoint(), 0, 0};
+    }
+
+    auto activeWaypoint = missionState.activeMission.waypoints[newWpIndex];
+    auto distanceToWaypoint = physicalState.position.to2D().distanceTo(activeWaypoint.position);
+
+    return {ActiveMissionState::Running,
+            missionState.activeMission,
+            activeWaypoint,
+            newWpIndex,
+            distanceToWaypoint};
 }

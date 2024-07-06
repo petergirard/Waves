@@ -3,6 +3,7 @@ import numpy as np
 from typing import List
 
 from comms.waves_status_message import WavesStatusMessage
+from model.base.point2D import Point2D
 
 
 class DataCache:
@@ -21,22 +22,35 @@ class DataCache:
         self.yaw_goal = []
         self.depth = []
         self.depth_goal = []
+        self.distance_to_waypoint = []
+        self.x_position = []
+        self.y_position = []
+        self.current_waypoint_index = 0
+        self.current_point = Point2D(0, 0)
+        self.current_point_goal = Point2D(0, 0)
 
     def add_message(self, message: WavesStatusMessage) -> None:
         self.messages.append(message)
         print(f"added message: {message}")
         self.times.append(message.runTimeSeconds)
-        self.elevator.append(message.maneuverControls.elevator)
-        self.rudder.append(message.maneuverControls.rudder)
-        self.throttle.append(message.maneuverControls.throttle)
-        self.speed.append(message.maneuverState.velocityVehicleFrame.x)
-        self.speed_goal.append(message.navigationStatus.speedGoal)
-        self.pitch.append(np.degrees(message.maneuverState.attitude.pitch))
-        self.pitch_goal.append(np.degrees(message.maneuverControls.pitchGoal))
-        self.yaw.append(np.degrees(message.maneuverState.attitude.yaw))
-        self.yaw_goal.append(np.degrees(message.navigationStatus.yawGoal))
-        self.depth.append(message.maneuverState.position.z)
-        self.depth_goal.append(message.navigationStatus.depthGoal)
+        self.elevator.append(message.maneuverControlsState.elevator)
+        self.rudder.append(message.maneuverControlsState.rudder)
+        self.throttle.append(message.maneuverControlsState.throttle)
+        self.speed.append(message.physicalState.velocityVehicleFrame.x)
+        self.speed_goal.append(message.maneuverGoalsState.speedGoal)
+        self.pitch.append(np.degrees(message.physicalState.attitude.pitch))
+        self.pitch_goal.append(np.degrees(message.maneuverControlsState.pitchGoal))
+        self.yaw.append(np.degrees(message.physicalState.attitude.yaw))
+        self.yaw_goal.append(np.degrees(message.maneuverGoalsState.yawGoal))
+        self.depth.append(message.physicalState.position.z)
+        self.depth_goal.append(message.maneuverGoalsState.depthGoal)
+        self.distance_to_waypoint.append(message.missionState.distanceToWaypoint)
+        self.x_position.append(message.physicalState.position.x)
+        self.y_position.append(message.physicalState.position.y)
+        self.current_waypoint_index = message.missionState.activeWaypointIndex
+        self.current_point = message.physicalState.position
+        self.current_point_goal = message.missionState.activeWaypoint.position
+
         
         # remove old messages
         while self.get_max_data_age() > self.max_time:
@@ -53,6 +67,8 @@ class DataCache:
             self.yaw_goal.pop(0)
             self.depth.pop(0)
             self.depth_goal.pop(0)
+            self.distance_to_waypoint.pop(0)
+            # keep all position data
 
     def get_max_data_age(self) -> datetime.timedelta:
         if len(self.messages) < 2:

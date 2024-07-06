@@ -4,15 +4,20 @@
 
 #include "MathUtils.h"
 
-// Bounds an angle from 0 to 360.
-double MathUtils::boundAngle_0to360(double angle) {
-    while (angle > 360){
-        angle -= 360;
-    }
-    while (angle < 0){
-        angle += 360;
-    }
-    return angle;
+double MathUtils::boundDegrees_0to360(double angle) {
+    return boundAngle(angle, 0, 360);
+}
+
+double MathUtils::boundDegrees_Neg180To180(double angle) {
+    return boundAngle(angle, -180, 180);
+}
+
+double MathUtils::boundRadians_0to2Pi(double angle) {
+    return boundAngle(angle, 0, 2.0*M_PI);
+}
+
+double MathUtils::boundRadians_NegPiToPi(double angle) {
+    return boundAngle(angle, -1.0 * M_PI, M_PI);
 }
 
 // Returns the output of the polynomial given the polynomial and x.
@@ -35,3 +40,19 @@ double MathUtils::applySigmoidFunction(double x) {
 
     return 2.0 / (1.0 + std::exp(-x)) - 1.0;
 }
+
+double MathUtils::sign(double x) {
+    return (x > 0) - (x < 0);
+}
+
+double MathUtils::boundAngle(double angle, double min, double max) {
+    double range = max - min;
+    while (angle > max){
+        angle -= range;
+    }
+    while (angle < min){
+        angle += range;
+    }
+    return angle;
+}
+

@@ -11,10 +11,10 @@
 
 class ManeuverSettings{
 public:
-    PidSettings depthPid = PidSettings(1, 0, 0.01);
-    PidSettings pitchPid = PidSettings(1, 0, 0.01);
-    PidSettings yawPid = PidSettings(1, 0, 0.01);
-    PidSettings speedPid = PidSettings(1, 0, 0.01);
+    PidSettings depthPid = PidSettings(0.1, 0.1, 0);
+    PidSettings pitchPid = PidSettings(1, 0, 0);
+    PidSettings yawPid = PidSettings(1, 0, 0);
+    PidSettings speedPid = PidSettings(0, 0, 0.1);
 
     ManeuverSettings() = default;
 };
