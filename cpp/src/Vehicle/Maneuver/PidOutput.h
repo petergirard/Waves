@@ -14,11 +14,10 @@ public:
     double value = 0; // output value of the PID loop
     double error = 0; // error that went into the PID loop
     double integral = 0; // integral that came out of PID loop
-    TimePoint time{}; // Initialized to epoch. Time that PID loop was run.
 
     PidOutput() = default;
-    PidOutput(double value_, double error_, double integral_, TimePoint t)
-        : value(value_), error(error_), integral(integral_), time(t) {}
+    PidOutput(double value_, double error_, double integral_)
+        : value(value_), error(error_), integral(integral_) {}
 };
 
 #endif //WAVES_PIDOUTPUT_H

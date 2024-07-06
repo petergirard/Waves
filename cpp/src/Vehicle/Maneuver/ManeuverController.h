@@ -11,7 +11,7 @@
 #include "../../Model/Maneuver/PhysicalState.h"
 #include "../../Model/Maneuver/ManeuverGoalsState.h"
 #include "ManeuverSettings.h"
-#include "Pid/PidOutput.h"
+#include "PidOutput.h"
 #include "../../Model/Mission/MissionState.h"
 #include <chrono>
 
@@ -24,15 +24,14 @@ public:
     ManeuverGoalsState maneuverGoalState = ManeuverGoalsState();
     void updateControls(const PhysicalState& physicalState,
                         const MissionState& missionState,
-                        const TimePoint& currentTime);
+                        const double& dt);
     void stop();
     ManeuverController() = default;
 
 private:
     static ManeuverGoalsState calculateManeuverState(const MissionState& missionState, PhysicalState physicalState);
+    static PidOutput calculatePid(const double& error, const double& dt, const PidOutput& lastOutput, const PidSettings& settings);
     ManeuverSettings settings = ManeuverSettings(); // hardcoded to defaults for now.
-    PhysicalState lastState = PhysicalState();
-    TimePoint lastUpdateTime{};
 
     PidOutput depthPidOutputs = PidOutput();
     PidOutput pitchPidOutputs = PidOutput();

@@ -16,17 +16,31 @@ ManeuverControlsState VehicleMain::getManeuverControlsState() const {
     return maneuverController.controls;
 }
 
-void VehicleMain::update(const PhysicalState &newState, const TimePoint &currentTime) {
+BatteryState VehicleMain::getBatteryState() const {
+    return batteryManager.batteryState;
+}
+
+void VehicleMain::update(const PhysicalState &newState, const double& dt) {
     missionController.update(newState);
     if (getMissionState().activeMissionState == ActiveMissionState::Finished){
         maneuverController.stop();
         return;
     }
 
-    maneuverController.updateControls(newState, getMissionState(), currentTime);
+    maneuverController.updateControls(newState, getMissionState(), dt);
+    batteryManager.update(getManeuverControlsState(), dt);
 }
 
-void VehicleMain::runMission(const Mission &mission) {
+void VehicleMain::runMission(const std::string& missionName) {
+    auto mission = missionRepo.getMission(missionName);
+    if (mission.has_value())
+        missionController.runMission(mission.value());
+    else
+        throw std::runtime_error("Mission not found in repository.");
+}
+
+void VehicleMain::loadAndRunMission(const Mission &mission) {
+    missionRepo.loadMission(mission);
     missionController.runMission(mission);
 }
 
@@ -34,5 +48,7 @@ void VehicleMain::stop() {
     maneuverController.stop();
     missionController.stop();
 }
+
+
 
 

@@ -11,23 +11,32 @@
 #include "../Model/Maneuver/ManeuverGoalsState.h"
 #include "Maneuver/ManeuverController.h"
 #include "Mission/MissionController.h"
+#include "Mission/MissionRepo.h"
+#include "Fuel/BatteryManager.h"
 
 
 class VehicleMain {
 public:
     VehicleMain() = default;
 
+    MissionRepo missionRepo;
+    BatteryManager fuelManager;
+
     [[nodiscard]] MissionState getMissionState() const;
     [[nodiscard]] ManeuverGoalsState getManeuverGoalsState() const;
     [[nodiscard]] ManeuverControlsState getManeuverControlsState() const;
+    [[nodiscard]] BatteryState getBatteryState() const;
 
-    void update(const PhysicalState& newState, const TimePoint& currentTime);
-    void runMission(const Mission& mission);
+    void runMission(const std::string& missionName);
+    void loadAndRunMission(const Mission& mission);
+    void update(const PhysicalState& newState, const double& dt);
+
     void stop();
 
 private:
     ManeuverController maneuverController = ManeuverController();
     MissionController missionController = MissionController();
+    BatteryManager batteryManager = BatteryManager();
 };
 
 

@@ -4,7 +4,7 @@ import sys
 from PyQt6.QtWidgets import QApplication
 from comms.data_cache import DataCache
 from comms.rabbit_subscriber import RabbitSubscriber
-from comms.waves_status_message import WavesStatusMessage
+from model.report.waves_status_report import WavesStatusReport
 from view.main_window import  MainWindow
 
 
@@ -18,7 +18,7 @@ if __name__ == '__main__':
         app.setStyleSheet(file.read())
 
     def callback(ch, method, properties, body):
-        message = WavesStatusMessage.from_json(body)
+        message = WavesStatusReport.from_json(body)
         data_cache.add_message(message)
 
 

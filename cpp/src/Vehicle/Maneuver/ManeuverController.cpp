@@ -3,23 +3,22 @@
 //
 
 #include "ManeuverController.h"
-#include "Pid/PidCalculator.h"
 #include "../../Util/MathUtils.h"
 
 void ManeuverController::updateControls(const PhysicalState& physicalState,
                                         const MissionState& missionState,
-                                        const TimePoint& currentTime) {
+                                        const double& dt) {
 
     maneuverGoalState = calculateManeuverState(missionState, physicalState);
 
-    depthPidOutputs = PidCalculator::calculate(maneuverGoalState.depthError, currentTime, depthPidOutputs, settings.depthPid);
+    depthPidOutputs = calculatePid(maneuverGoalState.depthError, dt, depthPidOutputs, settings.depthPid);
     double pitchGoal = GenericUtils::boundNumber(depthPidOutputs.value, -1 * std::numbers::pi / 4, std::numbers::pi / 4); // -45 deg to 45 deg.
     pitchGoal *= -1;
     double pitchError = pitchGoal - physicalState.attitude.pitch;
 
-    pitchPidOutputs = PidCalculator::calculate(pitchError, currentTime, pitchPidOutputs, settings.pitchPid);
-    yawPidOutputs = PidCalculator::calculate(maneuverGoalState.yawError, currentTime, yawPidOutputs, settings.yawPid);
-    speedPidOutputs = PidCalculator::calculate(maneuverGoalState.speedError, currentTime, speedPidOutputs, settings.speedPid);
+    pitchPidOutputs = calculatePid(pitchError, dt, pitchPidOutputs, settings.pitchPid);
+    yawPidOutputs = calculatePid(maneuverGoalState.yawError, dt, yawPidOutputs, settings.yawPid);
+    speedPidOutputs = calculatePid(maneuverGoalState.speedError, dt, speedPidOutputs, settings.speedPid);
 
     controls = ManeuverControlsState(pitchGoal, pitchPidOutputs.value, yawPidOutputs.value, speedPidOutputs.value);
     isStopped = false;
@@ -50,4 +49,14 @@ ManeuverGoalsState ManeuverController::calculateManeuverState(const MissionState
             depthError,
             speedGoal,
             speedError};
+}
+
+PidOutput ManeuverController::calculatePid(const double &error, const double &dt, const PidOutput &lastOutput,
+                                           const PidSettings &settings) {
+    auto integral = lastOutput.integral + error * dt;
+    auto derivative = (error - lastOutput.error) / dt;
+
+    auto output = settings.kp * error + settings.ki * integral + settings.kd * derivative;
+
+    return {output, error, integral};
 }

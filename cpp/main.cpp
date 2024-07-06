@@ -7,7 +7,7 @@
 #include "src/Sim/Physics.h"
 #include "src/Sim/Display.h"
 #include "src/Comms/RabbitMQ/RabbitPublisher.h"
-#include "src/Comms/JsonSerialization.h"
+#include "src/Comms/Json/JsonSerialization.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -26,7 +26,7 @@ int main() {
     SimplePhysics physics{}; // simulator
     Display display{};
 
-    vehicle.runMission(constructMission());
+    vehicle.loadAndRunMission(constructMission());
     PhysicalState maneuverState{};
 
     auto initialTime = std::chrono::time_point_cast<std::chrono::duration<double>>(std::chrono::system_clock::now());
@@ -40,16 +40,17 @@ int main() {
 
     while(running){
 
-        vehicle.update(maneuverState, currentTime);
+        vehicle.update(maneuverState, dt);
         maneuverState = physics.update(maneuverState, vehicle.getManeuverControlsState(), dt);
         display.displayStats(maneuverState, vehicle.getManeuverControlsState());
 
-        WavesStatusMessage wavesStatusMessage(vehicle.getManeuverControlsState(),
-                                              maneuverState,
-                                              vehicle.getMissionState(),
-                                              vehicle.getManeuverGoalsState(),
-                                              currentTime,
-                                              runTimeSeconds);
+        WavesStatusReport wavesStatusMessage(vehicle.getManeuverControlsState(),
+                                             maneuverState,
+                                             vehicle.getMissionState(),
+                                             vehicle.getManeuverGoalsState(),
+                                             vehicle.getBatteryState(),
+                                             currentTime,
+                                             runTimeSeconds);
 
         json j = wavesStatusMessage;
         rabbitPublisher.publishMessage(j.dump(4));

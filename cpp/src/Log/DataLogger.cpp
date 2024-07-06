@@ -16,7 +16,7 @@ void DataLogger::init() {
 
 }
 
-void DataLogger::log(const WavesStatusMessage &message) {
+void DataLogger::log(const WavesStatusReport &message) {
 
     std::vector<std::string> values(headers.size());
 

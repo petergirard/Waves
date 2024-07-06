@@ -6,7 +6,7 @@
 #define WAVES_MANEUVERSETTINGS_H
 
 #include <chrono>
-#include "Pid/PidSettings.h"
+#include "PidSettings.h"
 
 
 class ManeuverSettings{

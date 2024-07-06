@@ -51,31 +51,37 @@ add_executable(Waves main.cpp
         src/Vehicle/Maneuver/ManeuverController.cpp
         src/Vehicle/Maneuver/ManeuverController.h
         src/Vehicle/Maneuver/ManeuverSettings.h
-        src/Vehicle/Maneuver/Pid/PidCalculator.cpp
-        src/Vehicle/Maneuver/Pid/PidCalculator.h
-        src/Vehicle/Maneuver/Pid/PidOutput.h
-        src/Vehicle/Maneuver/Pid/PidSettings.h
+        src/Vehicle/Maneuver/PidOutput.h
+        src/Vehicle/Maneuver/PidSettings.h
 
         src/Vehicle/Mission/MissionController.cpp
         src/Vehicle/Mission/MissionController.h
 
         src/Vehicle/VehicleMain.cpp
         src/Vehicle/VehicleMain.h
-        src/Comms/JsonSerialization.cpp
-        src/Comms/JsonSerialization.h
+        src/Comms/Json/JsonSerialization.cpp
+        src/Comms/Json/JsonSerialization.h
         src/Comms/RabbitMQ/RabbitClient.cpp
         src/Comms/RabbitMQ/RabbitClient.h
         src/Comms/RabbitMQ/RabbitPublisher.cpp
         src/Comms/RabbitMQ/RabbitPublisher.h
         src/Comms/RabbitMQ/RabbitSubscriber.cpp
         src/Comms/RabbitMQ/RabbitSubscriber.h
-        src/Comms/WavesStatusMessage.h
+        src/Model/Report/WavesStatusReport.h
         src/Sim/SimplePhysics.cpp
         src/Sim/SimplePhysics.h
         src/Log/DataLogger.cpp
         src/Log/DataLogger.h
         src/Util/FormatUtils.h
         src/Log/LogHeaderIndex.h
+        src/Vehicle/Mission/MissionRepo.cpp
+        src/Vehicle/Mission/MissionRepo.h
+        src/Model/Command/LoadMissionCommand.h
+        src/Model/Command/RunMissionCommand.h
+        src/Model/Command/StopMissionCommand.h
+        src/Vehicle/Fuel/BatteryManager.cpp
+        src/Vehicle/Fuel/BatteryManager.h
+        src/Model/Misc/BatteryState.h
 )
 
 # Link libraries

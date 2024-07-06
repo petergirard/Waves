@@ -6,13 +6,13 @@
 #define WAVES_DATALOGGER_H
 
 
-#include "../Comms/WavesStatusMessage.h"
+#include "../Model/Report/WavesStatusReport.h"
 
 class DataLogger {
 public:
     explicit DataLogger(std::string fileDirectory_);
     void init();
-    void log(const WavesStatusMessage& message);
+    void log(const WavesStatusReport& message);
 
 private:
     const std::string fileDirectory;

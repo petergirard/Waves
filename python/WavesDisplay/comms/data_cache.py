@@ -2,13 +2,14 @@ import datetime
 import numpy as np
 from typing import List
 
-from comms.waves_status_message import WavesStatusMessage
+from model.misc.battery_state import BatteryState
+from model.report.waves_status_report import WavesStatusReport
 from model.base.point2D import Point2D
 
 
 class DataCache:
     def __init__(self, max_time: datetime.timedelta):
-        self.messages: List[WavesStatusMessage] = []
+        self.messages: List[WavesStatusReport] = []
         self.max_time = max_time
         self.times = []
         self.elevator = []
@@ -29,7 +30,7 @@ class DataCache:
         self.current_point = Point2D(0, 0)
         self.current_point_goal = Point2D(0, 0)
 
-    def add_message(self, message: WavesStatusMessage) -> None:
+    def add_message(self, message: WavesStatusReport) -> None:
         self.messages.append(message)
         print(f"added message: {message}")
         self.times.append(message.runTimeSeconds)
