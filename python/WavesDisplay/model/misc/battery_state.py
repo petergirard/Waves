@@ -12,9 +12,9 @@ class BatteryState:
             'wattHoursRemaining':self.wattHoursRemaining
         }
 
-    @staticmethod
-    def from_dict(data):
-        return BatteryState(
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
             percentRemaining=data['percentRemaining'],
             wattHoursRemaining=data['wattHoursRemaining']
         )

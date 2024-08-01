@@ -19,6 +19,6 @@ class Point3D:
             'z': self.z
         }
 
-    @staticmethod
-    def from_dict(data):
-        return Point3D(**data)
+    @classmethod
+    def from_dict(cls, data):
+        return cls(**data)

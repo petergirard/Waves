@@ -7,11 +7,14 @@
 
 #include "../Mission/Mission.h"
 #include "../Base/TimePoint.h"
+#include "CommandBase.h"
 
-class LoadMissionCommand{
+struct LoadMissionCommand : public CommandBase {
 public:
     Mission mission;
-    TimePoint timePoint;
+    LoadMissionCommand() = default;
+    LoadMissionCommand(const Mission& mission_, TimePoint timeIssued_)
+    : CommandBase(timeIssued_), mission(mission_) {}
 };
 
 #endif //WAVES_LOADMISSIONCOMMAND_H

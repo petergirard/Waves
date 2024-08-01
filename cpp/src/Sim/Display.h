@@ -7,7 +7,7 @@
 
 
 #include <vector>
-#include "../Model/Maneuver/PhysicalState.h"
+#include "../Model/Navigation/PhysicalState.h"
 #include "../Model/Maneuver/ManeuverControlsState.h"
 
 class Display {

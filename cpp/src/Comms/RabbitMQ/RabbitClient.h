@@ -7,26 +7,23 @@
 
 #include <SimpleAmqpClient/SimpleAmqpClient.h>
 #include <string>
+#include "../IConnectable.h"
 
-class RabbitClient {
+class RabbitClient : public IConnectable {
 public:
-    explicit RabbitClient(std::string host = "localhost",
-                          std::string exchange = "default_exchange",
-                          std::string exchange_type = "direct",
-                          std::string queue = "",
-                          std::string routing_key = "");
-    virtual ~RabbitClient();
+    explicit RabbitClient(std::string queueName);
+    ~RabbitClient() override;
 
-    void connect();
-    void closeConnection();
+    void connect() override;
+    void closeConnection() override;
 
 protected:
-    std::string host;
-    std::string exchange;
-    std::string exchange_type;
-    std::string queue;
-    std::string routing_key;
+    const std::string HOST = "localhost";
+    const std::string EXCHANGE = "Waves";
+    const std::string EXCHANGE_TYPE = "fanout";
+    const std::string ROUTING_KEY = "";
 
+    std::string queue;
     AmqpClient::Channel::ptr_t channel;
 };
 

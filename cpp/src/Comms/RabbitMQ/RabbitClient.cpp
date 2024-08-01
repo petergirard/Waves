@@ -8,17 +8,8 @@
 
 #include <utility>
 
-RabbitClient::RabbitClient(std::string host,
-                           std::string exchange,
-                           std::string exchange_type,
-                           std::string queue,
-                           std::string routing_key)
-        : host(std::move(host)),
-        exchange(std::move(exchange)),
-        exchange_type(std::move(exchange_type)),
-        queue(std::move(queue)),
-        routing_key(std::move(routing_key)),
-        channel(nullptr) {}
+RabbitClient::RabbitClient(std::string queueName) : queue(std::move(queueName)){}
+
 
 RabbitClient::~RabbitClient() {
     closeConnection();
@@ -26,7 +17,7 @@ RabbitClient::~RabbitClient() {
 
 void RabbitClient::connect() {
     AmqpClient::Channel::OpenOpts opts;
-    opts.host = host;
+    opts.host = HOST;
     opts.vhost = "/";
     opts.port = 5672; // default RabbitMQ port
     AmqpClient::Channel::OpenOpts::BasicAuth auth(
@@ -35,10 +26,10 @@ void RabbitClient::connect() {
     opts.auth = auth;
 
     channel = AmqpClient::Channel::Open(opts);
-    channel->DeclareExchange(exchange, exchange_type);
+    channel->DeclareExchange(EXCHANGE, EXCHANGE_TYPE);
     if (!queue.empty()) {
-        channel->DeclareQueue(queue);
-        channel->BindQueue(queue, exchange, routing_key);
+        channel->DeclareQueue(queue, false, true, false, false);
+        channel->BindQueue(queue, EXCHANGE, ROUTING_KEY);
     }
 }
 

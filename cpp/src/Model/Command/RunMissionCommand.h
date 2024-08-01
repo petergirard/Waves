@@ -6,11 +6,16 @@
 #define WAVES_RUNMISSIONCOMMAND_H
 
 #include <string>
+#include <utility>
 #include "../Base/TimePoint.h"
+#include "CommandBase.h"
 
-class RunMissionCommand{
+struct RunMissionCommand : public CommandBase {
+public:
     std::string missionName;
-    TimePoint timePoint;
+    RunMissionCommand() = default;
+    RunMissionCommand(std::string missionName_, TimePoint timeIssued_)
+    : CommandBase(timeIssued_), missionName(std::move(missionName_)) {}
 };
 
 #endif //WAVES_RUNMISSIONCOMMAND_H

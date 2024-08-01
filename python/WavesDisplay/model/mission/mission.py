@@ -15,9 +15,9 @@ class Mission:
             'waypoints': [waypoint.to_dict() for waypoint in self.waypoints]
         }
 
-    @staticmethod
-    def from_dict(data):
-        return Mission(
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
             name=data['name'],
             waypoints=[Waypoint.from_dict(wp) for wp in data['waypoints']]
         )

@@ -13,7 +13,7 @@
 
 struct Mission {
 public:
-    std::string name;
+    std::string name{};
     std::vector<Waypoint> waypoints{};
     Mission() = default;
     explicit Mission(std::string name_, const std::vector<Waypoint>& waypoints_)

@@ -13,6 +13,6 @@ class Orientation:
             'yaw': self.yaw
         }
 
-    @staticmethod
-    def from_dict(data):
-        return Orientation(**data)
+    @classmethod
+    def from_dict(cls, data):
+        return cls(**data)

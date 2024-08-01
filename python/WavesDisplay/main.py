@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
 
     def start_consumer():
-        subscriber = RabbitSubscriber(queue='hello', exchange='waves_status_message', exchange_type='fanout',
+        subscriber = RabbitSubscriber(queue='waves_status_message', exchange='Waves', exchange_type='fanout',
                                       routing_key='')
         subscriber.connect()
         subscriber.start_consuming(callback=callback)

@@ -111,7 +111,8 @@ class RealTimeDisplay(QWidget):
         self.curves['depth_goal'].setData(times, dc.depth_goal)
 
         # Update scatter plot for xy position. World frame is NED. Need to invert x/y to view on ENU graph.
-        self.scatter.setData(dc.y_position, dc.x_position)
+        with dc.lock: # lock to prevent data lengths from being different lengths.
+            self.scatter.setData(dc.y_position, dc.x_position)
 
         # Update arrow for current position and direction
         if len(dc.x_position) > 0 and len(dc.y_position) > 0 and len(dc.yaw) > 0:
@@ -128,7 +129,6 @@ class RealTimeDisplay(QWidget):
         dc = self.data_cache
 
         messages = dc.messages
-        distance_to_waypoint = dc.distance_to_waypoint[-1] if messages else 0
         speed = dc.speed[-1] if messages else 0
         pitch = dc.pitch[-1] if messages else 0
         yaw = dc.yaw[-1] if messages else 0
@@ -138,7 +138,6 @@ class RealTimeDisplay(QWidget):
         # Update text below each plot
         dc = self.data_cache
         info_text = (
-            f"Distance to waypoint: {distance_to_waypoint:.2f} m\n"
             f"Current speed: {speed:.2f} m/s\n"
             f"Current pitch: {pitch:.2f} degrees\n"
             f"Current yaw: {yaw:.2f} degrees\n"

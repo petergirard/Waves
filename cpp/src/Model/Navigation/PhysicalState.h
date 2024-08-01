@@ -11,14 +11,14 @@
 
 class PhysicalState{
 public:
-    Point3D position = Point3D(); // meters.
-    Vector3D velocityWorldFrame = Vector3D(); // meters / sec.
-    Vector3D accelerationWorldFrame = Vector3D(); // meters / sec^2.
-    Vector3D velocityVehicleFrame = Vector3D(); // meters / sec.
-    Vector3D accelerationVehicleFrame = Vector3D(); // meters / sec^2
-    Orientation attitude = Orientation(); // degrees.
-    Orientation attitudeVelocity = Orientation(); // degrees / sec
-    Orientation attitudeAcceleration = Orientation(); // degrees / sec^2
+    Point3D position{}; // meters.
+    Vector3D velocityWorldFrame{}; // meters / sec.
+    Vector3D accelerationWorldFrame{}; // meters / sec^2.
+    Vector3D velocityVehicleFrame{}; // meters / sec.
+    Vector3D accelerationVehicleFrame{}; // meters / sec^2
+    Orientation attitude{}; // degrees.
+    Orientation attitudeVelocity{}; // degrees / sec
+    Orientation attitudeAcceleration{}; // degrees / sec^2
 
     PhysicalState() = default;
     PhysicalState(Point3D position_,

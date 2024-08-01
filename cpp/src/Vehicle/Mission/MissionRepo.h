@@ -14,13 +14,13 @@ class MissionRepo {
 public:
     MissionRepo() = default;
 
-    void loadMission(const Mission& mission);
+    void loadMission(Mission&& mission);
     void clearMissions();
     std::optional<Mission> getMission(const std::string& missionName);
     std::vector<Mission> getLoadedMissions();
 
 private:
-    std::map<std::string, Mission> repo;
+    std::map<std::string, Mission> _missions;
 };
 
 

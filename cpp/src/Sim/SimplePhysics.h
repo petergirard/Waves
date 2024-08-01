@@ -6,7 +6,7 @@
 #define WAVES_SIMPLEPHYSICS_H
 
 
-#include "../Model/Maneuver/PhysicalState.h"
+#include "../Model/Navigation/PhysicalState.h"
 #include "../Model/Maneuver/ManeuverControlsState.h"
 
 class SimplePhysics {

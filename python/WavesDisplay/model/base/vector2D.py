@@ -23,6 +23,6 @@ class Vector2D:
             'magnitude': self.magnitude
         }
 
-    @staticmethod
-    def from_dict(data):
-        return Vector2D(**data)
+    @classmethod
+    def from_dict(cls, data):
+        return cls(**data)

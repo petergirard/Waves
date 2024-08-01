@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class ManeuverGoalsState:
+    pitchGoal: float = 0
+    pitchError: float = 0
     yawGoal: float = 0
     yawError: float = 0
     depthGoal: float = 0
@@ -12,6 +14,8 @@ class ManeuverGoalsState:
 
     def to_dict(self):
         return {
+            'pitchGoal': self.pitchGoal,
+            'pitchError': self.pitchError,
             'yawGoal': self.yawGoal,
             'yawError': self.yawError,
             'depthGoal': self.depthGoal,
@@ -20,6 +24,6 @@ class ManeuverGoalsState:
             'speedError': self.speedError
         }
 
-    @staticmethod
-    def from_dict(data):
-        return ManeuverGoalsState(**data)
+    @classmethod
+    def from_dict(cls, data):
+        return cls(**data)

@@ -4,17 +4,17 @@
 
 #include "MissionRepo.h"
 
-void MissionRepo::loadMission(const Mission &mission) {
-    repo[mission.name] = mission;
+void MissionRepo::loadMission(Mission&& mission) {
+    _missions.emplace(mission.name, std::move(mission));
 }
 
 void MissionRepo::clearMissions() {
-    repo.clear();
+    _missions.clear();
 }
 
 std::optional<Mission> MissionRepo::getMission(const std::string &missionName) {
-    if (repo.contains(missionName)){
-        return repo[missionName];
+    if (_missions.contains(missionName)){
+        return _missions[missionName];
     }
     else{
         return std::nullopt;
@@ -23,8 +23,8 @@ std::optional<Mission> MissionRepo::getMission(const std::string &missionName) {
 
 std::vector<Mission> MissionRepo::getLoadedMissions() {
     std::vector<Mission> missions;
-    missions.reserve(repo.size());
-    for(const auto& pair : repo)
+    missions.reserve(missions.size());
+    for(const auto& pair : _missions)
         missions.push_back(pair.second);
     return missions;
 }

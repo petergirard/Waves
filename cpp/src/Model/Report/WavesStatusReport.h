@@ -5,33 +5,34 @@
 #ifndef WAVES_WAVESSTATUSREPORT_H
 #define WAVES_WAVESSTATUSREPORT_H
 
+#include <optional>
 #include "../Maneuver/ManeuverControlsState.h"
-#include "../Maneuver/PhysicalState.h"
-#include "../Mission/MissionState.h"
+#include "../Navigation/PhysicalState.h"
+#include "../Mission/MissionExecutionState.h"
 #include "../Maneuver/ManeuverGoalsState.h"
 #include "../Base/TimePoint.h"
 #include "../Misc/BatteryState.h"
 
 class WavesStatusReport{
 public:
-    ManeuverControlsState maneuverControlsState;
-    PhysicalState physicalState;
-    MissionState missionState;
-    ManeuverGoalsState maneuverGoalsState;
-    BatteryState batteryState;
-    TimePoint timePoint;
-    double runTimeSeconds;
+    ManeuverControlsState maneuverControlsState{};
+    PhysicalState physicalState{};
+    MissionExecutionState missionExecutionState{};
+    std::optional<ManeuverGoalsState> maneuverGoalsState{};
+    BatteryState batteryState{};
+    TimePoint timePoint{};
+    double runTimeSeconds{};
 
     WavesStatusReport(ManeuverControlsState maneuverControls_,
                       PhysicalState physicalState_,
-                      MissionState missionState_,
-                      ManeuverGoalsState maneuverGoalsState_,
+                      MissionExecutionState missionExecutionState_,
+                      std::optional<ManeuverGoalsState> maneuverGoalsState_,
                       BatteryState batteryState_,
                       TimePoint timePoint_,
                       double runTimeSeconds_)
                        : maneuverControlsState(maneuverControls_),
                          physicalState(physicalState_),
-                         missionState(missionState_),
+                         missionExecutionState(missionExecutionState_),
                          maneuverGoalsState(maneuverGoalsState_),
                          batteryState(batteryState_),
                          timePoint(timePoint_),

@@ -20,7 +20,7 @@ void DataLogger::log(const WavesStatusReport &message) {
 
     std::vector<std::string> values(headers.size());
 
-    // Time
+    // Duration
     values.emplace_back(FormatUtils::formatDate(message.timePoint));
     values.emplace_back(FormatUtils::formatTime(message.timePoint));
 
@@ -31,6 +31,7 @@ void DataLogger::log(const WavesStatusReport &message) {
     values.emplace_back(FormatUtils::doubleToString(ps.position.y, 2));
     values.emplace_back(FormatUtils::doubleToString(ps.position.z, 2));
 
+    // TODO: implement the rest
 }
 
 
@@ -38,7 +39,7 @@ std::vector<std::string> DataLogger::getHeaders() {
     std::vector<std::string> headers;
     int i = 0;
 
-    // Time
+    // Duration
     headers.emplace_back("date");
     headers.emplace_back("date");
     headers.emplace_back("time");

@@ -5,20 +5,29 @@
 #ifndef WAVES_JSONSERIALIZATION_H
 #define WAVES_JSONSERIALIZATION_H
 
-//#include "../../Model/Base/Orientation.h"
-//#include "../../Model/Base/Point2D.h"
-//#include "../../Model/Base/Point3D.h"
-//#include "../../Model/Base/TimePoint.h"
-//#include "../../Model/Base/Vector2D.h"
-//#include "../../Model/Base/Vector3D.h"
-//#include "../../Model/Maneuver/ManeuverControlsState.h"
-//#include "../../Model/Maneuver/PhysicalState.h"
-//#include "../../Model/Maneuver/ManeuverGoalsState.h"
-//#include "../../Model/Misc/BatteryState.h"
-//#include "../../Model/Mission/Mission.h"
-//#include "../../Model/Mission/MissionState.h"
-//#include "../../Model/Mission/Waypoint.h"
+struct GoToLocationCommand;
+
+#include "../../Model/Base/Orientation.h"
+#include "../../Model/Base/Point2D.h"
+#include "../../Model/Base/Point3D.h"
+#include "../../Model/Base/TimePoint.h"
+#include "../../Model/Base/Vector2D.h"
+#include "../../Model/Base/Vector3D.h"
+#include "../../Model/Maneuver/ManeuverControlsState.h"
+#include "../../Model/Navigation/PhysicalState.h"
+#include "../../Model/Maneuver/ManeuverGoalsState.h"
+#include "../../Model/Misc/BatteryState.h"
+#include "../../Model/Mission/Mission.h"
+#include "../../Model/Mission/MissionExecutionState.h"
+#include "../../Model/Mission/Waypoint.h"
 #include "../../Model/Report/WavesStatusReport.h"
+#include "../../Model/Command/LoadMissionCommand.h"
+#include "../../Model/Command/RunMissionCommand.h"
+#include "../../Model/Command/StopCommand.h"
+#include "../../Model/Maneuver/DriveToManeuver.h"
+#include "../../Model/Maneuver/ParkManeuver.h"
+#include "../../Model/Maneuver/PrimitiveManeuver.h"
+#include "../../Model/Command/ManeuverCommand.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -59,9 +68,9 @@ void from_json(const json& j, BatteryState& b);
 void to_json(json& j, const Mission& m);
 void from_json(const json& j, Mission& m);
 
-// MissionState
-void to_json(json& j, const MissionState& ms);
-void from_json(const json& j, MissionState& ms);
+// MissionExecutionState
+void to_json(json& j, const MissionExecutionState& ms);
+void from_json(const json& j, MissionExecutionState& ms);
 
 // ManeuverGoalsState
 void to_json(json& j, const ManeuverGoalsState& ns);
@@ -78,6 +87,53 @@ void from_json(const json& j, TimePoint& tp);
 // WavesStatusReport
 void to_json(json& j, const WavesStatusReport& w);
 void from_json(const json& j, WavesStatusReport& w);
+
+// MANEUVERS
+// ManeuverCompletionCriteria
+void to_json(json& j, const ManeuverCompletionCriteria& m);
+void from_json(const json& j, ManeuverCompletionCriteria& m);
+
+// ManeuverBase
+void to_json(json& j, const ManeuverBase& m);
+void from_json(const json& j, ManeuverBase& m);
+
+// DriveToManeuver
+void to_json(json& j, const DriveToManeuver& m);
+void from_json(const json& j, DriveToManeuver& m);
+
+// ParkManeuver
+void to_json(json& j, const ParkManeuver& m);
+void from_json(const json& j, ParkManeuver& m);
+
+// PrimitiveManeuver
+void to_json(json& j, const PrimitiveManeuver& m);
+void from_json(const json& j, PrimitiveManeuver& m);
+
+
+// COMMANDS
+
+// LoadMissionCommand
+void to_json(json& j, const LoadMissionCommand& cmd);
+void from_json(const json& j, LoadMissionCommand& cmd);
+
+// RunMissionCommand
+void to_json(json& j, const RunMissionCommand& cmd);
+void from_json(const json& j, RunMissionCommand& cmd);
+
+// StopCommand
+void to_json(json& j, const StopCommand& cmd);
+void from_json(const json& j, StopCommand& cmd);
+
+// DriveToManeuverCommand
+void to_json(json& j, const ManeuverCommand<DriveToManeuver>& command);
+void from_json(const json& j, ManeuverCommand<DriveToManeuver>& command);
+
+// ParkManeuverCommand
+void to_json(json& j, const ManeuverCommand<ParkManeuver>& command);
+void from_json(const json& j, ManeuverCommand<ParkManeuver>& command);
+
+void to_json(json& j, const ManeuverCommand<PrimitiveManeuver>& command);
+void from_json(const json& j, ManeuverCommand<PrimitiveManeuver>& command);
 
 
 #endif //WAVES_JSONSERIALIZATION_H

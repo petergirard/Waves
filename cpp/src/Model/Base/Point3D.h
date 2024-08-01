@@ -26,6 +26,12 @@ struct Point3D {
     Point3D operator-(const Vector3D& v) const{
         return {x - v.x, y - v.y, z - v.z};
     }
+    Vector3D operator+(const Point3D& p) const{
+        return {x + p.x, y + p.y, z + p.z};
+    }
+    Vector3D operator-(const Point3D& p) const {
+        return {x - p.x, y - p.y, z - p.z};
+    }
     bool operator==(const Point3D& p) const{
         return x == p.x && y == p.y && z == p.z;
     }

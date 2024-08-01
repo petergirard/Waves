@@ -17,6 +17,6 @@ class Point2D:
             'y': self.y
         }
 
-    @staticmethod
-    def from_dict(data):
-        return Point2D(**data)
+    @classmethod
+    def from_dict(cls, data):
+        return cls(**data)

@@ -27,6 +27,14 @@ public:
         return {x - v.x, y - v.y};
     }
 
+    Vector2D operator+(const Point2D& p) const{
+        return {x + p.x, y + p.y};
+    }
+
+    Vector2D operator-(const Point2D& p) const {
+        return {x - p.x, y - p.y};
+    }
+
     [[nodiscard]] Vector2D vectorTo(const Point2D& other) const{
         return {other.x - x, other.y - y};
     }

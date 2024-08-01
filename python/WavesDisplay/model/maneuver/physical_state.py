@@ -28,9 +28,9 @@ class PhysicalState:
             'attitudeAcceleration': self.attitudeAcceleration.to_dict(),
         }
 
-    @staticmethod
-    def from_dict(data):
-        return PhysicalState(
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
             position=Point3D.from_dict(data['position']),
             velocityWorldFrame=Vector3D.from_dict(data['velocityWorldFrame']),
             accelerationWorldFrame=Vector3D.from_dict(data['accelerationWorldFrame']),

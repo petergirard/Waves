@@ -5,8 +5,10 @@
 #ifndef WAVES_MANEUVERGOALSSTATE_H
 #define WAVES_MANEUVERGOALSSTATE_H
 
-class ManeuverGoalsState{
+struct ManeuverGoalsState{
 public:
+    double pitchGoal = 0;
+    double pitchError = 0;
     double yawGoal = 0;
     double yawError = 0;
     double depthGoal = 0;
@@ -15,13 +17,17 @@ public:
     double speedError = 0;
 
     ManeuverGoalsState() = default;
-    ManeuverGoalsState(double yawGoal_,
+    ManeuverGoalsState(double pitchGoal_,
+                       double pitchError_,
+                       double yawGoal_,
                        double yawError_,
                        double depthGoal_,
                        double depthError_,
                        double speedGoal_,
                        double speedError_)
-        : yawGoal(yawGoal_),
+        : pitchGoal(pitchGoal_),
+        pitchError(pitchError_),
+        yawGoal(yawGoal_),
         yawError(yawError_),
         depthGoal(depthGoal_),
         depthError(depthError_),

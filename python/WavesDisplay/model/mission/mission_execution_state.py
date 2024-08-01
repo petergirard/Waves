@@ -12,12 +12,11 @@ class ActiveMissionState(Enum):
 
 
 @dataclass
-class MissionState:
+class MissionExecutionState:
     activeMissionState: ActiveMissionState = ActiveMissionState.Unknown
     activeMission: Mission = field(default_factory=Mission)
     activeWaypoint: Waypoint = field(default_factory=Waypoint)
     activeWaypointIndex: int = 0
-    distanceToWaypoint: float = 0
 
     def to_dict(self):
         return {
@@ -28,12 +27,11 @@ class MissionState:
             'distanceToWaypoint': self.distanceToWaypoint
         }
 
-    @staticmethod
-    def from_dict(data):
-        return MissionState(
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
             activeMissionState=ActiveMissionState(data['activeMissionState']),
             activeMission=Mission.from_dict(data['activeMission']),
             activeWaypoint=Waypoint.from_dict(data['activeWaypoint']),
             activeWaypointIndex=data['activeWaypointIndex'],
-            distanceToWaypoint=data['distanceToWaypoint']
         )

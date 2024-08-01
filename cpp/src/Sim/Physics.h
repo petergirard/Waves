@@ -6,7 +6,7 @@
 #define WAVES_PHYSICS_H
 
 
-#include "../Model/Maneuver/PhysicalState.h"
+#include "../Model/Navigation/PhysicalState.h"
 #include "../Model/Maneuver/ManeuverControlsState.h"
 #include "../Model/Base/TimePoint.h"
 #include <cmath>
@@ -20,7 +20,7 @@ public:
 private:
     // CONSTANTS
 
-    // Vehicle Parameters
+    // Pilot Parameters
     const double VEHICLE_RADIUS = 0.10; // m
     const double VEHICLE_LENGTH = 2.0; // m
     const double VEHICLE_DISPLACEMENT = M_PI * VEHICLE_RADIUS * VEHICLE_RADIUS * VEHICLE_LENGTH; // m^3. Equation for volume of cylinder. Super rough.
@@ -45,10 +45,10 @@ private:
     const double THRUST_MAX = 100.0;    // N
 
     // Control Effectiveness
-    const double ELEVATOR_EFFECTIVENESS = 0.25; // Effectiveness coefficient for the elevator
-    const double RUDDER_EFFECTIVENESS = 0.25; // Effectiveness coefficient for the rudder
-    const double PITCH_DAMPING_COEFF = 0.01; // Damping coefficient for pitch
-    const double YAW_DAMPING_COEFF = 0.01; // Damping coefficient for yaw
+    const double ELEVATOR_EFFECTIVENESS = 0.05; // Effectiveness coefficient for the elevator
+    const double RUDDER_EFFECTIVENESS = 0.05; // Effectiveness coefficient for the rudder
+    const double PITCH_DAMPING_COEFF = 0.1; // Damping coefficient for pitch
+    const double YAW_DAMPING_COEFF = 0.1; // Damping coefficient for yaw
 
     [[nodiscard]] double calculateDrag(double speed, double dragCoeff, double area) const;
 };
