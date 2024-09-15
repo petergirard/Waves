@@ -2,8 +2,11 @@ import datetime
 import threading
 import sys
 from PyQt6.QtWidgets import QApplication
+
+from comms.comms_factory import CommsFactory
 from comms.data_cache import DataCache
 from comms.rabbit_subscriber import RabbitSubscriber
+from control.vehicle_controller import VehicleController
 from model.report.waves_status_report import WavesStatusReport
 from view.main_window import  MainWindow
 
@@ -11,7 +14,9 @@ from view.main_window import  MainWindow
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     data_cache = DataCache(datetime.timedelta(seconds=10))
-    main_window = MainWindow(data_cache)
+    comms_factory = CommsFactory()
+    vehicle_controller = VehicleController(comms_factory)
+    main_window = MainWindow(vehicle_controller, data_cache)
 
     # Load the stylesheet
     with open('view/style.qss', 'r') as file:

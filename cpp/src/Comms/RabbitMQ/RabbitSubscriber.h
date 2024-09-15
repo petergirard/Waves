@@ -21,8 +21,8 @@ public:
     void stopConsuming();
 
 private:
-    std::thread consuming_thread;
-    std::atomic<bool> is_consuming{false};
+    std::thread consumingThread;
+    std::atomic<bool> isConsuming{false};
 };
 
 template<typename T>
@@ -35,15 +35,16 @@ void RabbitSubscriber<T>::startConsuming(const std::function<void(const T&)>& ca
     if (!channel) {
         throw std::runtime_error("Not connected to RabbitMQ. Call connect() first.");
     }
-    is_consuming = true;
-    consuming_thread = std::thread([this, callback]() {
+    isConsuming = true;
+    consumingThread = std::thread([this, callback]() {
         channel->BasicConsume(queue, "", true, false, false, 1);
-        while (is_consuming) {
+        while (isConsuming) {
             AmqpClient::Envelope::ptr_t envelope;
             bool success = channel->BasicConsumeMessage(envelope);
             if (success) {
                 // Convert message body from JSON to T
-                T message = nlohmann::json::parse(envelope->Message()->Body()).get<T>();
+                auto body = envelope->Message()->Body();
+                T message = nlohmann::json::parse(body).get<T>();
                 callback(message);
             }
         }
@@ -52,10 +53,10 @@ void RabbitSubscriber<T>::startConsuming(const std::function<void(const T&)>& ca
 
 template<typename T>
 void RabbitSubscriber<T>::stopConsuming() {
-    if (is_consuming) {
-        is_consuming = false;
-        if (consuming_thread.joinable()) {
-            consuming_thread.join();
+    if (isConsuming) {
+        isConsuming = false;
+        if (consumingThread.joinable()) {
+            consumingThread.join();
         }
     }
 }

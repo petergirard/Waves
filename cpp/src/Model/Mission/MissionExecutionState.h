@@ -18,7 +18,7 @@ public:
     ActiveMissionState activeMissionState = ActiveMissionState::Unknown;
     Mission activeMission{};
     Waypoint activeWaypoint{};
-    int activeWaypointIndex = 0;
+    int activeWaypointIndex = -1;
 
     MissionExecutionState() = default;
     MissionExecutionState(const MissionExecutionState& other) = default;

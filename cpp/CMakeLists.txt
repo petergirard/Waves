@@ -48,17 +48,17 @@ add_executable(Waves main.cpp
         src/Util/GenericUtils.h
 
         # Pilot
-        src/Vehicle/Maneuver/PidController.cpp
-        src/Vehicle/Maneuver/PidController.h
-        src/Vehicle/Maneuver/DriveSettings.h
-        src/Vehicle/Maneuver/PidOutput.h
-        src/Vehicle/Maneuver/PidSettings.h
+        src/Pilot/Maneuver/PidController.cpp
+        src/Pilot/Maneuver/PidController.h
+        src/Pilot/Maneuver/DriveSettings.h
+        src/Pilot/Maneuver/PidOutput.h
+        src/Pilot/Maneuver/PidSettings.h
 
-        src/Vehicle/Mission/MissionEngine.cpp
-        src/Vehicle/Mission/MissionEngine.h
+        src/Pilot/Mission/MissionEngine.cpp
+        src/Pilot/Mission/MissionEngine.h
 
-        src/Vehicle/Pilot.cpp
-        src/Vehicle/Pilot.h
+        src/Pilot/Pilot.cpp
+        src/Pilot/Pilot.h
         src/Comms/Json/JsonSerialization.cpp
         src/Comms/Json/JsonSerialization.h
         src/Comms/RabbitMQ/RabbitClient.cpp
@@ -72,13 +72,13 @@ add_executable(Waves main.cpp
         src/Log/DataLogger.h
         src/Util/FormatUtils.h
         src/Log/LogHeaderIndex.h
-        src/Vehicle/Mission/MissionRepo.cpp
-        src/Vehicle/Mission/MissionRepo.h
+        src/Pilot/Mission/MissionRepo.cpp
+        src/Pilot/Mission/MissionRepo.h
         src/Model/Command/LoadMissionCommand.h
         src/Model/Command/RunMissionCommand.h
         src/Model/Command/StopCommand.h
-        src/Vehicle/Fuel/BatteryManager.cpp
-        src/Vehicle/Fuel/BatteryManager.h
+        src/Pilot/Fuel/BatteryManager.cpp
+        src/Pilot/Fuel/BatteryManager.h
         src/Model/Misc/BatteryState.h
         src/Control/CommandManager.cpp
         src/Control/CommandManager.h
@@ -86,14 +86,14 @@ add_executable(Waves main.cpp
         src/Control/CommandProcessor.h
         src/Util/Thread/ConcurrentQueue.h
         src/Control/CommandProcessorBase.h
-        src/Vehicle/Maneuver/ManeuverEngine.cpp
-        src/Vehicle/Maneuver/ManeuverEngine.h
+        src/Pilot/Maneuver/ManeuverEngine.cpp
+        src/Pilot/Maneuver/ManeuverEngine.h
         src/Model/Maneuver/DriveToManeuver.h
         src/Model/Maneuver/ManeuverCompletionCriteria.h
         src/Model/Maneuver/PrimitiveManeuver.h
         src/Model/Maneuver/ParkManeuver.h
         src/Model/Maneuver/ManeuverBase.h
-        src/Vehicle/Maneuver/ManeuverWrapper.h
+        src/Pilot/Maneuver/ManeuverWrapper.h
         src/Model/Command/ManeuverCommand.h
         src/Model/Command/CommandBase.h
         src/Control/CommandManager.cpp

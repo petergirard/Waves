@@ -30,7 +30,7 @@ void MissionEngine::progressWaypoint() {
         _missionState = MissionExecutionState(ActiveMissionState::Finished,
                                               _missionState.activeMission,
                                               Waypoint(),
-                                              0);
+                                              -1);
     }
 
     auto activeWaypoint = _missionState.activeMission.waypoints[newWpIndex];

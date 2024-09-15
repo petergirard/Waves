@@ -7,30 +7,30 @@
 #include <functional>
 
 CommandManager::CommandManager() {
-    _commandProcessors.push_back(std::make_unique<CommandProcessor<LoadMissionCommand>>(
-            "load_mission_command",
-            [this](Pilot& vehicle, const LoadMissionCommand& command) { processLoadMissionCommand(vehicle, command); }
-    ));
+//    _commandProcessors.push_back(std::make_unique<CommandProcessor<LoadMissionCommand>>(
+//            "load_mission_command",
+//            [this](Pilot& vehicle, const LoadMissionCommand& command) { processLoadMissionCommand(vehicle, command); }
+//    ));
     _commandProcessors.push_back(std::make_unique<CommandProcessor<RunMissionCommand>>(
             "run_mission_command",
             [this](Pilot& vehicle, const RunMissionCommand& command) { processRunMissionCommand(vehicle, command); }
     ));
-    _commandProcessors.push_back(std::make_unique<CommandProcessor<StopCommand>>(
-            "stop_mission_command",
-            [this](Pilot& vehicle, const StopCommand& command) { processStopMissionCommand(vehicle, command); }
-    ));
-    _commandProcessors.push_back(std::make_unique<CommandProcessor<ManeuverCommand<DriveToManeuver>>>(
-            "drive_to_maneuver_command",
-            [this](Pilot& vehicle, const ManeuverCommand<DriveToManeuver>& command) { processDriveToManeuverCommand(vehicle, command); }
-    ));
-    _commandProcessors.push_back(std::make_unique<CommandProcessor<ManeuverCommand<ParkManeuver>>>(
-            "park_maneuver_command",
-            [this](Pilot& vehicle, const ManeuverCommand<ParkManeuver>& command) { processParkManeuverCommand(vehicle, command); }
-    ));
-    _commandProcessors.push_back(std::make_unique<CommandProcessor<ManeuverCommand<PrimitiveManeuver>>>(
-            "primitive_maneuver_command",
-            [this](Pilot& vehicle, const ManeuverCommand<PrimitiveManeuver>& command) { processPrimitiveManeuverCommand(vehicle, command); }
-    ));
+//    _commandProcessors.push_back(std::make_unique<CommandProcessor<StopCommand>>(
+//            "stop_command",
+//            [this](Pilot& vehicle, const StopCommand& command) { processStopMissionCommand(vehicle, command); }
+//    ));
+//    _commandProcessors.push_back(std::make_unique<CommandProcessor<ManeuverCommand<DriveToManeuver>>>(
+//            "drive_to_maneuver_command",
+//            [this](Pilot& vehicle, const ManeuverCommand<DriveToManeuver>& command) { processDriveToManeuverCommand(vehicle, command); }
+//    ));
+//    _commandProcessors.push_back(std::make_unique<CommandProcessor<ManeuverCommand<ParkManeuver>>>(
+//            "park_maneuver_command",
+//            [this](Pilot& vehicle, const ManeuverCommand<ParkManeuver>& command) { processParkManeuverCommand(vehicle, command); }
+//    ));
+//    _commandProcessors.push_back(std::make_unique<CommandProcessor<ManeuverCommand<PrimitiveManeuver>>>(
+//            "primitive_maneuver_command",
+//            [this](Pilot& vehicle, const ManeuverCommand<PrimitiveManeuver>& command) { processPrimitiveManeuverCommand(vehicle, command); }
+//    ));
 
     ParkManeuver parkManeuver{};
     TimePoint time{};
@@ -52,7 +52,7 @@ void CommandManager::closeConnection() {
     }
 }
 
-void CommandManager::executeCommands(Pilot& vehicle) {
+void CommandManager::processCommands(Pilot& vehicle) {
     for (const auto& processors : _commandProcessors) {
         processors->executeCommands(vehicle);
     }

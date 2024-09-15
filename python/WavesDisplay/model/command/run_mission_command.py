@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import datetime
 
-from command_base import CommandBase
+from model.command.command_base import CommandBase
 
 @dataclass
 class RunMissionCommand(CommandBase):

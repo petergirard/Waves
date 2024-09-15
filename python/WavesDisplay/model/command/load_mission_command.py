@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from command_base import CommandBase
+from model.command.command_base import CommandBase
 from model.mission.mission import Mission
 import datetime
 

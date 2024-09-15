@@ -5,7 +5,7 @@ from comms.data_cache import DataCache
 from model.misc.battery_state import BatteryState
 
 
-class RealTimeDisplay(QWidget):
+class RealTimeView(QWidget):
     def __init__(self, data_cache: DataCache):
         super().__init__()
         self.data_cache = data_cache

@@ -9,7 +9,7 @@
 #include <functional>
 #include "../Comms/IConnectable.h"
 #include "../Comms/RabbitMQ/RabbitSubscriber.h"
-#include "../Vehicle/Pilot.h"
+#include "../Pilot/Pilot.h"
 #include "../Util/Thread/ConcurrentQueue.h"
 #include "CommandProcessorBase.h"
 

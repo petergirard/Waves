@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <functional>
-#include "../Vehicle/Pilot.h"
+#include "../Pilot/Pilot.h"
 #include "../Comms/RabbitMQ/RabbitSubscriber.h"
 #include "../Model/Command/LoadMissionCommand.h"
 #include "../Model/Command/RunMissionCommand.h"
@@ -22,7 +22,7 @@ public:
 
     void connect() override;
     void closeConnection() override;
-    void executeCommands(Pilot& vehicle);
+    void processCommands(Pilot& vehicle);
 
 private:
     std::vector<std::unique_ptr<CommandProcessorBase>> _commandProcessors;

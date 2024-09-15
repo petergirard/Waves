@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from maneuver_base import ManeuverBase
+from model.maneuver.maneuver_base import ManeuverBase
 from model.base.point3D import Point3D
 
 @dataclass

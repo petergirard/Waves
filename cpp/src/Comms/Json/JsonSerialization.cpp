@@ -173,11 +173,14 @@ void to_json(json& j, const WavesStatusReport& w) {
     j = json{
             {"maneuverControlsState", w.maneuverControlsState},
             {"physicalState", w.physicalState},
-            {"missionExecutionState", w.missionExecutionState},
             {"batteryState", w.batteryState},
             {"timePoint", w.timePoint.time_since_epoch().count()},
             {"runTimeSeconds", w.runTimeSeconds}
     };
+
+    if (w.missionExecutionState.has_value()){
+        j["missionExecutionState"] = w.missionExecutionState.value();
+    }
 
     if (w.maneuverGoalsState.has_value()){
         j["maneuverGoalsState"] = w.maneuverGoalsState.value();
@@ -187,11 +190,17 @@ void to_json(json& j, const WavesStatusReport& w) {
 void from_json(const json& j, WavesStatusReport& w) {
     j.at("maneuverControlsState").get_to(w.maneuverControlsState);
     j.at("physicalState").get_to(w.physicalState);
-    j.at("missionExecutionState").get_to(w.missionExecutionState);
     j.at("batteryState").get_to(w.batteryState);
     double time_since_epoch = j.at("timePoint").get<double>();
     w.timePoint = TimePoint(std::chrono::duration<double>(time_since_epoch));
     j.at("runTimeSeconds").get_to(w.runTimeSeconds);
+
+    if (j.contains("missionExecutionState")){
+        w.missionExecutionState = j["missionExecutionState"];
+    }
+    else {
+        w.missionExecutionState = std::nullopt;
+    }
 
     if (j.contains("maneuverGoalsState")){
         w.maneuverGoalsState = j["maneuverGoalsState"];

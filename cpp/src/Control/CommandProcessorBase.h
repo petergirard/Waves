@@ -6,7 +6,7 @@
 #define WAVES_COMMANDPROCESSORBASE_H
 
 #include "../Comms/IConnectable.h"
-#include "../Vehicle/Pilot.h"
+#include "../Pilot/Pilot.h"
 
 class CommandProcessorBase : public IConnectable {
 public:

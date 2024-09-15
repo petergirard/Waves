@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
-from command_base import CommandBase
+from model.command.command_base import CommandBase
 import datetime
 
 T = TypeVar('T')
